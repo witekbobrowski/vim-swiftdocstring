@@ -3,7 +3,7 @@ if exists('g:loaded_after_object')
 endif
 let g:loaded_after_object = 1
 
-function! swiftdocstring:template()
+function! swiftdocstring#template()
   let template = {}
 
   function! template.empty()
@@ -23,12 +23,17 @@ function! swiftdocstring:template()
   endfunction
 
   function! template.parameter(parameter)
-    return "///   - " + parameter + ": " + parameter + " description"
+    return "///   - ". a:parameter. ": ". a:parameter. " description"
   endfunction
 
   function! template.enumCase(case)
-    return "/// - " + case + ": " + case + " description"
+    return "/// - ". a:case. ": ". a:case. " description"
   endfunction
 
   return template
+endfunction
+
+function! swiftdocstring#docstring()
+    let template = swiftdocstring#template()
+    echo template.simple()
 endfunction
