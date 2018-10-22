@@ -1,7 +1,7 @@
-if exists('g:loaded_after_object')
+if exists('g:loaded_swiftdocstring')
   finish
 endif
-let g:loaded_after_object = 1
+let g:loaded_swiftdocstring = 1
 
 function! swiftdocstring#template()
   let template = {}
