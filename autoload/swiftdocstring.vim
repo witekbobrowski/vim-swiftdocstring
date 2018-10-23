@@ -36,7 +36,7 @@ endfunction
 function! swiftdocstring#docstring()
 	let l:line_n = line('.') - 1
     let l:template = swiftdocstring#template()
-    let l:sample = {'function': {'parameters': ['path'], 'returns': 1}}
+    let l:sample = {'type': {'enum': {'cases': ['north', 'south', 'east', 'west']}}}
     let l:lines = swiftdocstring#generate_docstring(l:template, l:sample)
     let l:formatted = swiftdocstring#formatted(l:lines, line('.'))
     call swiftdocstring#output(l:formatted, l:line_n)
@@ -106,9 +106,9 @@ function! swiftdocstring#generate_docstring(template, internal_rep)
 endfunction
 
 function! swiftdocstring#formatted(lines, line_n)
-    let formatted = ''
+    let formatted = []
     for line in a:lines
-        let formatted .= swiftdocstring#indented(line, indent(a:line_n))
+        call add(formatted, swiftdocstring#indented(line, indent(a:line_n)))
     endfor
     return formatted
 endfunction
