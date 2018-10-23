@@ -35,5 +35,17 @@ endfunction
 
 function! swiftdocstring#docstring()
     let template = swiftdocstring#template()
-    echo template.simple()
+	let l:line_n = line(".") - 1
+    let l:text = swiftdocstring#indented(template.simple(), indent(line(".")))
+    call swiftdocstring#output(l:text, l:line_n)
 endfunction
+
+function! swiftdocstring#output(text, line_number)
+    call append(a:line_number, a:text)
+endfunction
+
+function! swiftdocstring#indented(text, n_spaces)
+    let l:prefix = repeat(" ", a:n_spaces)
+    return l:prefix . a:text
+endfunction
+
