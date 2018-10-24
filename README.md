@@ -5,17 +5,17 @@ A simple vim/neovim plugin that provides Xcode-like docstring templates for Swif
 ## Installation
 
 ##### vim-plug
-```
+```vim
 Plug 'witekbobrowski/vim-swiftdocstring'
 ```
 
 ##### Vundle 
-```
+```vim
 Plugin 'witekbobrowski/vim-swiftdocstring'
 ```
 
 ##### Dein
-```
+```vim
 call dein#add('witekbobrowski/vim-swiftdocstring')
 ```
 
@@ -24,19 +24,19 @@ The interface provided by the plugin is super simple right now. Add the followin
 to your `.vimrc`
 
 ##### ⌨️ Mappings
-```
+```vim
 " Generate docstring for current context
 autocmd Filetype swift nnoremap <silent><tab>/ :SwiftDocstringCurrent<CR>
 ```
 
 ##### 🎛 Options
-```
+```vim
 " Use Multi-line delimiter '/** ... */' instead of single-line '///'
 let g:swiftdocstring#use_multi_line_delimiter = 1
 ```
 
 ## Documentation
 
-```
+```vim
 :help swiftdocstring
 ```
