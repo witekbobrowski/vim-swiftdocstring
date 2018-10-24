@@ -1,10 +1,10 @@
 if exists('g:loaded_swiftdocstring')
-  finish
+    finish
 endif
 let g:loaded_swiftdocstring = 1
 
 function! swiftdocstring#docstring()
-	let l:line_n = line('.') - 1
+    let l:line_n = line('.') - 1
     let l:template = swiftdocstring#template#factory()
     let l:sample = {'type': {'enum': {'cases': ['north', 'south', 'east', 'west']}}}
     let l:lines = swiftdocstring#generator#docstring(l:template, l:sample)
