@@ -15,3 +15,22 @@ function! swiftdocstring#output#formatted(lines, line_n)
     endfor
     return formatted
 endfunction
+
+function! swiftdocstring#output#prefixed(lines, use_multiline_delimiter, template) 
+    let l:prefixed = []
+    let l:prefix = ''
+    if a:use_multiline_delimiter
+        call add(l:prefixed, a:template.multi_line_begin())
+        let l:prefix = ' '
+    else
+        let l:prefix = a:template.single_line()
+    endif
+    for line in a:lines
+        call add(l:prefixed, l:prefix . line)
+    endfor
+    if a:use_multiline_delimiter
+        call add(l:prefixed, a:template.multi_line_end())
+    endif
+    return prefixed
+endfunction
+
