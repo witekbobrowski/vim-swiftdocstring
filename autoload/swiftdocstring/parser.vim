@@ -50,7 +50,12 @@ function! swiftdocstring#parser#parse(line_n)
     endfunction
 
     function! parser.is_full_func_scope(lines)
-		" TODO: Check if all the context for docstring is present 
+        for line in a:lines
+            if line =~# '{'
+                return 1
+            endif
+        endfor
+        return 0
     endfunction
 
     function! parser.match_line(line, keywords)
