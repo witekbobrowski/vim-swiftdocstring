@@ -3,21 +3,24 @@ function! swiftdocstring#parser#parse(line_n)
 
     function! parser.parse(self, line_n)
         let l:context = a:self.get_context(a:self, a:line_n)
+        echom l:context
         let l:converted = a:self.convert(l:context)
         return l:converted
     endfunction
 
     function! parser.get_context(self, line_n)
-        let l:lines = [getLine(a:line_n)]
+        let l:lines = [getline(a:line_n)]
 		let l:main_keyword = self.get_main_keyword(a:self, l:lines)
+        echom l:main_keyword
         while empty(l:main_keyword) 
-			l:lines = [getLine(a:line_n - len(l:lines))] + l:lines
+			let l:lines = [getline(a:line_n - len(l:lines))] + l:lines
 			let l:main_keyword = self.get_main_keyword(a:self, l:lines)
+            echom l:main_keyword
         endwhile
 		let l:i = 0
         while !self.is_full_context(a:self, l:lines, l:main_keyword) 
 			let l:i += 1
-			l:lines += [getLine(a:line_n + l:i)]
+			let l:lines += [getline(a:line_n + l:i)]
         endwhile
         return l:lines
     endfunction
@@ -30,7 +33,7 @@ function! swiftdocstring#parser#parse(line_n)
                 return l:matched
             endif 
          endfor
-       return 0
+       return ''
     endfunction
 
     function! parser.is_full_context(self, lines, main_keyword)
@@ -47,6 +50,7 @@ function! swiftdocstring#parser#parse(line_n)
 
     function! parser.is_full_enum_scope(lines)
 		" TODO: Check if all the context for docstring is present 
+        return 1
     endfunction
 
     function! parser.is_full_func_scope(lines)
@@ -61,6 +65,7 @@ function! swiftdocstring#parser#parse(line_n)
     function! parser.match_line(line, keywords)
         for keyword in a:keywords
             if a:line =~ '\<' . keyword . '\>'
+                echo keyword
                 return keyword 
             endif
         endfor
@@ -69,6 +74,7 @@ function! swiftdocstring#parser#parse(line_n)
 
     function! parser.convert(context)
 		" TODO: Convert to internal representation
+        return {}
     endfunction
 
     return parser.parse(parser, a:line_n)

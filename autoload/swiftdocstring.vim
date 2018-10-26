@@ -1,5 +1,6 @@
 function! swiftdocstring#docstring_current()
     let l:line_n = line('.') - 1
+    call swiftdocstring#parser#parse(l:line_n)
     let l:template = swiftdocstring#template#factory()
     let l:sample = {'type': {'enum': {'cases': ['north', 'south', 'east', 'west']}}}
     let l:lines = swiftdocstring#generator#docstring(l:template, l:sample)
