@@ -3,7 +3,7 @@ function! swiftdocstring#parser#parse(line_n)
 
     function! parser.parse(self, line_n)
         let l:context = a:self.get_context(a:self, a:line_n)
-        let l:converted = a:self.convert(l:context)
+        let l:converted = a:self.convert(a:self, l:context)
         return l:converted
     endfunction
 
@@ -40,8 +40,7 @@ function! swiftdocstring#parser#parse(line_n)
     endfunction
 
     function! parser.is_full_context(self, lines, main_keyword)
-        let l:simple_keywords = ['let', 'var', 'protocol', 'class', 'struct']
-		if index(l:simple_keywords, a:main_keyword) >= 0
+		if index(['let', 'var', 'protocol', 'class', 'struct'], a:main_keyword) >= 0
 			return 1
 		elseif 'enum' ==# a:main_keyword
 			return a:self.is_full_enum_scope(a:lines)
@@ -75,9 +74,17 @@ function! swiftdocstring#parser#parse(line_n)
         return 0
     endfunction
 
-    function! parser.convert(context)
-		" TODO: Convert to internal representation
-        return {}
+    function! parser.convert(self, lines)
+        let l:keyword = a:self.get_main_keyword(a:self, a:lines) 
+		if index(['let', 'var'], l:keyword) >= 0
+			return {'property': {}}
+        elseif index(['protocol', 'class', 'struct', 'enum'], l:keyword) >= 0
+			return {'type': {l:keyword : {}}}
+		elseif 'func' ==# l:keyword 
+            return {'function': {}}
+		else 
+            return {}
+		endif
     endfunction
 
     return parser.parse(parser, a:line_n)
