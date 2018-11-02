@@ -29,7 +29,7 @@ function! swiftdocstring#parser#parse(line_n)
     endfunction
 
     function! parser.get_main_keyword(self, lines)
-        let l:keywords = ['let', 'var', 'protocol', 'class', 'struct', 'enum', 'func']
+        let l:keywords = ['let', 'var', 'protocol', 'class', 'struct', 'enum', 'func', 'init']
         for line in a:lines
             let l:matched = a:self.match_line(line, l:keywords) 
             if !empty(l:matched)
@@ -44,7 +44,7 @@ function! swiftdocstring#parser#parse(line_n)
 			return 1
 		elseif 'enum' ==# a:main_keyword
 			return a:self.is_full_enum_scope(a:lines)
-		elseif 'func' ==# a:main_keyword
+        elseif index(['init', 'func'], a:main_keyword) >= 0
 			return a:self.is_full_func_scope(a:lines)
 		else 
 			return 0
@@ -79,12 +79,33 @@ function! swiftdocstring#parser#parse(line_n)
 		if index(['let', 'var'], l:keyword) >= 0
 			return {'property': {}}
         elseif index(['protocol', 'class', 'struct', 'enum'], l:keyword) >= 0
-			return {'type': {l:keyword : {}}}
-		elseif 'func' ==# l:keyword 
-            return {'function': {}}
+            return a:self.convert_type(a:self, l:keyword, a:lines)
+        elseif index(['init', 'func'], l:keyword) >= 0
+            return a:self.convert_function(a:self, a:lines)
 		else 
             return {}
 		endif
+    endfunction
+
+    function! parser.convert_function(self, lines)
+        return {'function': {}}
+    endfunction
+
+    function! parser.convert_type(self, type, lines)
+        let l:type_info = {a:type : {}}
+		if 'enum' ==# a:type
+            let l:cases = []
+            for line in a:lines
+                let l:cases += a:self.match_cases(line) 
+            endfor
+            let l:type_info[a:type] = {'cases': l:cases}
+        endif
+	    return {'type': l:type_info}
+    endfunction
+
+    function! parser.match_cases(line)
+        let l:cases = []
+        return l:cases
     endfunction
 
     return parser.parse(parser, a:line_n)
