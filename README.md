@@ -25,7 +25,7 @@ to your `.vimrc`
 
 ##### ⌨️ Mappings
 ```vim
-" Generate docstring for current context
+" Generate docstring for current context on 'Tab' + '/'
 autocmd Filetype swift nnoremap <silent><tab>/ :SwiftDocstringCurrent<CR>
 ```
 
