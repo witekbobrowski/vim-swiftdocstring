@@ -3,7 +3,6 @@ function! swiftdocstring#parser#parse(line_n)
 
     function! parser.parse(self, line_n)
         let l:context = a:self.get_context(a:self, a:line_n)
-        echom l:context
         let l:converted = a:self.convert(l:context)
         return l:converted
     endfunction
@@ -11,33 +10,35 @@ function! swiftdocstring#parser#parse(line_n)
     function! parser.get_context(self, line_n)
         let l:lines = [getline(a:line_n)]
 		let l:main_keyword = self.get_main_keyword(a:self, l:lines)
-        echom l:main_keyword
         while empty(l:main_keyword) 
+            if a:line_n - len(l:lines) == 0
+                return []
+            endif
 			let l:lines = [getline(a:line_n - len(l:lines))] + l:lines
 			let l:main_keyword = self.get_main_keyword(a:self, l:lines)
-            echom l:main_keyword
         endwhile
-		let l:i = 0
-        while !self.is_full_context(a:self, l:lines, l:main_keyword) 
-			let l:i += 1
-			let l:lines += [getline(a:line_n + l:i)]
-        endwhile
+		" let l:i = 0
+        " while !self.is_full_context(a:self, l:lines, l:main_keyword) 
+		" 	let l:i += 1
+		" 	let l:lines += [getline(a:line_n + l:i)]
+        " endwhile
         return l:lines
     endfunction
 
     function! parser.get_main_keyword(self, lines)
-        let l:keywords = ['let', 'var', 'protocol', 'class'. 'struct', 'enum', 'func']
+        let l:keywords = ['let', 'var', 'protocol', 'class', 'struct', 'enum', 'func']
         for line in a:lines
             let l:matched = a:self.match_line(line, l:keywords) 
-            if l:matched
+            if !empty(l:matched)
                 return l:matched
             endif 
-         endfor
-       return ''
+        endfor
+        return ''
     endfunction
 
     function! parser.is_full_context(self, lines, main_keyword)
-		if index(['let', 'var', 'protocol', 'class', 'struct'], a:main_keyword) >= 0
+        let l:simple_keywords = ['let', 'var', 'protocol', 'class', 'struct']
+		if index(l:simple_keywords, a:main_keyword) >= 0
 			return 1
 		elseif 'enum' ==# a:main_keyword
 			return a:self.is_full_enum_scope(a:lines)
@@ -65,7 +66,6 @@ function! swiftdocstring#parser#parse(line_n)
     function! parser.match_line(line, keywords)
         for keyword in a:keywords
             if a:line =~ '\<' . keyword . '\>'
-                echo keyword
                 return keyword 
             endif
         endfor
