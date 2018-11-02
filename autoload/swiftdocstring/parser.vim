@@ -11,17 +11,20 @@ function! swiftdocstring#parser#parse(line_n)
         let l:lines = [getline(a:line_n)]
 		let l:main_keyword = self.get_main_keyword(a:self, l:lines)
         while empty(l:main_keyword) 
-            if a:line_n - len(l:lines) == 0
+            if a:line_n - len(l:lines) < 0
                 return []
             endif
 			let l:lines = [getline(a:line_n - len(l:lines))] + l:lines
 			let l:main_keyword = self.get_main_keyword(a:self, l:lines)
         endwhile
-		" let l:i = 0
-        " while !self.is_full_context(a:self, l:lines, l:main_keyword) 
-		" 	let l:i += 1
-		" 	let l:lines += [getline(a:line_n + l:i)]
-        " endwhile
+		let l:i = 0
+        while !self.is_full_context(a:self, l:lines, l:main_keyword) 
+            if a:line_n + l:i > line('$')
+                return []
+            endif
+			let l:i += 1
+			let l:lines += [getline(a:line_n + l:i)]
+        endwhile
         return l:lines
     endfunction
 
