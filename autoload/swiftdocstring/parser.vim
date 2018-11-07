@@ -53,6 +53,7 @@ function! swiftdocstring#parser#parse(line_n)
 
     function! parser.is_full_enum_scope(lines)
 		" TODO: Check if all the context for docstring is present 
+        let l:full_scope_regex = '\v\{\n((\t.*\n)|(^$\n))*^\}'
         return 1
     endfunction
 
@@ -88,6 +89,15 @@ function! swiftdocstring#parser#parse(line_n)
     endfunction
 
     function! parser.convert_function(self, lines)
+        " TODO: Convert lines with function context to internal reprezentation
+       	let l:function_parameters_pattern = '\v\(@<=(.|\s)*\)@='
+       	let l:function_returns_pattern = '\v\(@<=(.|\s)*\)@=\K(.|\s)*(->)'
+   		let l:scope = ''
+        for line in a:lines
+            let l:scope .= line
+        endfor
+        echom matchstr(l:scope, l:function_parameters_pattern)
+        echom match(l:scope, l:function_returns_pattern)
         return {'function': {}}
     endfunction
 
