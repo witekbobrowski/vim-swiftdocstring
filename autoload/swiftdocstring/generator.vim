@@ -15,14 +15,15 @@ function! swiftdocstring#generator#docstring(template, internal_rep)
 
     function! generator.generate_from_function(self, template, func_dict)
         let l:lines = [a:template.simple()]
-        if has_key(a:func_dict, 'properties')
+        if has_key(a:func_dict, 'parameters')
             call add(l:lines, a:template.empty())
-            call add(l:lines, a:template.properties())
-            for property in a:func_dict['properties']
-                call add(l:lines, a:template.property(property))
+            call add(l:lines, a:template.parameters())
+            for parameter in a:func_dict['parameters']
+                call add(l:lines, a:template.parameter(parameter))
             endfor
-        elseif has_key(a:func_dict, 'returns')
-            if !has_key(a:func_dict, 'properties')
+        endif
+        if has_key(a:func_dict, 'returns')
+            if !has_key(a:func_dict, 'parameters')
                 call add(l:lines, a:template.empty())
             endif
             call add(l:lines, a:template.returns())

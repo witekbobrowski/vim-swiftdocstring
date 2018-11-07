@@ -92,12 +92,20 @@ function! swiftdocstring#parser#parse(line_n)
         " TODO: Convert lines with function context to internal reprezentation
        	let l:function_parameters_pattern = '\v\(@<=(.|\s)*\)@='
        	let l:function_returns_pattern = '\v\(@<=(.|\s)*\)@=(.|\s)*[->]+'
-        let l:function_info = {}
    		let l:scope = ''
         for line in a:lines
             let l:scope .= line
         endfor
-        echo matchstr(l:scope, l:function_parameters_pattern)
+        let l:raw_parameters = matchstr(l:scope, l:function_parameters_pattern)
+        let l:parameters = []
+        for raw_parameter in split(l:raw_parameters, ',')
+            let l:components = split(raw_parameter, ':')
+            call add(l:parameters, split(l:components[0], ' ')[-1])
+        endfor
+        let l:function_info = {}
+        if len(l:parameters) != 0
+            let l:function_info = {'parameters': l:parameters}
+        endif
         if match(l:scope, l:function_returns_pattern) != -1
             let l:function_info['returns'] = 'true'
         endif
