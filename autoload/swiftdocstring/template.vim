@@ -1,3 +1,4 @@
+" Factory of single line templates designated to use in docstring builder
 function! swiftdocstring#template#factory()
     let template = {}
     
@@ -26,7 +27,7 @@ function! swiftdocstring#template#factory()
     endfunction
 
     function! template.returns()
-        return  ' - Returns: return value description'
+        return ' - Returns: return value description'
     endfunction
     
     function! template.parameter(parameter)

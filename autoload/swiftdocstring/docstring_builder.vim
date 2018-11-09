@@ -1,7 +1,8 @@
-function! swiftdocstring#generator#docstring(template, internal_rep)
-    let generator = {}
+" Main builder for generating docstring from intermediate representation
+function! swiftdocstring#docstring_builder#docstring(template, intermediate_representaiton)
+    let self = {}
 
-    function! generator.generate(self, template, dict)
+    function! self.generate(self, template, dict)
         let l:lines = []
         if has_key(a:dict, 'property')
             return [a:template.simple()]
@@ -13,7 +14,7 @@ function! swiftdocstring#generator#docstring(template, internal_rep)
         return l:lines
     endfunction
 
-    function! generator.generate_from_function(self, template, func_dict)
+    function! self.generate_from_function(self, template, func_dict)
         let l:lines = [a:template.simple()]
         if has_key(a:func_dict, 'parameters')
             call add(l:lines, a:template.empty())
@@ -31,7 +32,7 @@ function! swiftdocstring#generator#docstring(template, internal_rep)
         return l:lines
     endfunction
 
-    function! generator.generate_from_type(self, template, type_dict)
+    function! self.generate_from_type(self, template, type_dict)
         if has_key(a:type_dict, 'enum')
             return a:self.generate_from_enum(a:self, a:template, a:type_dict['enum'])
         elseif has_key(a:type_dict, 'struct')
@@ -43,7 +44,7 @@ function! swiftdocstring#generator#docstring(template, internal_rep)
         endif
     endfunction
 
-    function! generator.generate_from_enum(self, template, enum_dict)
+    function! self.generate_from_enum(self, template, enum_dict)
         let l:lines = [a:template.simple()]
         call add(l:lines, a:template.empty())
         for case in a:enum_dict['cases']
@@ -52,5 +53,5 @@ function! swiftdocstring#generator#docstring(template, internal_rep)
         return l:lines
     endfunction
 
-    return generator.generate(generator, a:template, a:internal_rep)
+    return self.generate(self, a:template, a:intermediate_representaiton)
 endfunction
