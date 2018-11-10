@@ -80,7 +80,7 @@ function! s:update_with_options(lines, options, template)
     
     if has_key(a:options, 'target-line-number')
         let l:line_number = a:options['target-line-number']
-        let l:udpated = s:update_with_indentation(l:updated, l:line_number)
+        let l:updated = s:update_with_indentation(l:updated, l:line_number)
     endif
 
     return l:updated

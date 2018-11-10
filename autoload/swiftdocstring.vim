@@ -5,5 +5,5 @@ function! swiftdocstring#docstring_current()
     let l:options['target-line-number'] = line('.') 
     let l:options['delimiter-type'] = g:swiftdocstring#use_multi_line_delimiter
     let l:docstring = swiftdocstring#docstring#build(l:intermediate_representation, l:template, l:options)
-    call swiftdocstring#output#output(l:docstring, line('.') - 1)
+    call swiftdocstring#utils#output(l:docstring, line('.') - 1)
 endfunction
