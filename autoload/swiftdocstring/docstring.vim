@@ -1,29 +1,33 @@
 " Builder for generating docstring from intermediate representation.
 "
 " Parameters
-" - template: Object with methods that returns appropriate docstring parts. 
 " - intermediate_representaiton: Dictionary containing all the parsed
 "      info about the context to which the docstring should be generated.
-function! swiftdocstring#docstring#build(template, intermediate_representaiton)
-    return s:generate(a:template, a:intermediate_representaiton)
+" - template: Object with methods that returns appropriate docstring parts. 
+" - options: Dictionary with user defined or contex related options that are
+"   used during generation process.
+function! swiftdocstring#docstring#build(intermediate_representaiton, template, options)
+    let l:lines = s:generate(a:intermediate_representaiton, a:template)
+    let l:updated = s:update_with_options(l:lines, a:options, a:template)
+    return l:updated 
 endfunction
 
 " Helper function that delegates other, more specified functions to perform
 " docstring generation from Intermediate Representation with template.
-function! s:generate(template, ir)
+function! s:generate(ir, template)
     let l:lines = []
     if has_key(a:ir, 'property')
         let l:lines = [a:template.simple()]
     elseif has_key(a:ir, 'function')
-        let l:lines = s:generate_from_function(a:template, a:ir['function'])
+        let l:lines = s:generate_from_function(a:ir['function'], a:template)
     elseif has_key(a:ir, 'type')
-        let l:lines = s:generate_from_type(a:template, a:ir['type'])
+        let l:lines = s:generate_from_type(a:ir['type'], a:template)
     endif
     return l:lines
 endfunction
 
-" Generating docstring for Swift funcitons from Intermediate Representation
-function! s:generate_from_function(template, function_ir)
+" Generating docstring for Swift funcitons from Intermediate Representation.
+function! s:generate_from_function(function_ir, template)
     let l:lines = [a:template.simple()]
     if has_key(a:function_ir, 'parameters')
         call add(l:lines, a:template.empty())
@@ -41,10 +45,10 @@ function! s:generate_from_function(template, function_ir)
     return l:lines
 endfunction
 
-" Generating docstring for Swift types from Intermediate Representation
-function! s:generate_from_type(template, type_ir)
+" Generating docstring for Swift types from Intermediate Representation.
+function! s:generate_from_type(type_ir, template)
     if has_key(a:type_ir, 'enum')
-        return s:generate_from_enum(a:template, a:type_ir['enum'])
+        return s:generate_from_enum(a:type_ir['enum'], a:template)
     elseif has_key(a:type_ir, 'struct')
         return [a:template.simple()]
     elseif has_key(a:type_ir, 'class')
@@ -54,8 +58,8 @@ function! s:generate_from_type(template, type_ir)
     endif
 endfunction
 
-" Generating docstring for Swift enumerations from Intermediate Representation
-function! s:generate_from_enum(template, enum_ir)
+" Generating docstring for Swift enumerations from Intermediate Representation.
+function! s:generate_from_enum(enum_ir, template)
     let l:lines = [a:template.simple()]
     call add(l:lines, a:template.empty())
     for case in a:enum_ir['cases']
@@ -64,3 +68,44 @@ function! s:generate_from_enum(template, enum_ir)
     return l:lines
 endfunction
 
+" Evaluating options dictionary to adjust the generated docstring to context
+" related and user-defined options.
+function! s:update_with_options(lines, options, template)
+    let l:updated = a:lines
+
+    if has_key(a:options, 'delimiter-type')
+        let l:delimiter = a:options['delimiter-type']
+        let l:updated = s:update_with_delimiter(l:updated, l:delimiter, a:template) 
+    endif
+    
+    if has_key(a:options, 'target-line-number')
+        let l:line_number = a:options['target-line-number']
+        let l:udpated = s:update_with_indentation(l:updated, l:line_number)
+    endif
+
+    return l:updated
+endfunction
+
+" Append appropriate Swift docstring delimiter to generated docstring, either 
+" single-line `/** ... */` or multi-line `///`.
+function! s:update_with_delimiter(lines, delimiter_type, template)
+    let l:updated = []
+    let l:prefix = ''
+    if a:delimiter_type ==# 1 " multi-line 
+        let l:prefix = ' '
+        call add(l:updated, a:template.multi_line_begin())
+    elseif a:delimiter_type ==# 0 " single-line 
+        let l:prefix = a:template.single_line()
+    endif 
+    let l:updated += swiftdocstring#utils#prefixed_strings(a:lines, l:prefix)
+    if a:delimiter_type ==# 1 "multi-line
+        call add(l:updated, a:template.multi_line_end())
+    endif
+    return l:updated
+endfunction
+
+" Prefix all lines with indentation from given line number.
+function! s:update_with_indentation(lines, line_n)
+    let l:indentation = indent(a:line_n)
+    return swiftdocstring#utils#indented_strings(a:lines, l:indentation)
+endfunction

@@ -21,7 +21,7 @@ endfunction
 function! swiftdocstring#utils#prefixed_strings(strings, prefix) 
     let l:prefixed = []
     for string in a:strings
-        call add(l:prefixed, a:prefix . string)
+        call add(l:prefixed, swiftdocstring#utils#prefixed(string, a:prefix))
     endfor
     return prefixed
 endfunction
