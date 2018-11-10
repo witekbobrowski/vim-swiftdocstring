@@ -1,3 +1,11 @@
+" 
+"   swiftdocstring.vim
+"   witekbobrowski/vim-swiftdocstring 
+"
+"   Created by Witek Bobrowski (witek@bobrowski.co).
+"   Published under MIT license.
+"
+
 if exists('g:loaded_swiftdocstring')
     finish
 endif

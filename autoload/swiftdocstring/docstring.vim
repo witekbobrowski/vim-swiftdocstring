@@ -1,3 +1,11 @@
+" 
+"   docstring.vim
+"   witekbobrowski/vim-swiftdocstring 
+"
+"   Created by Witek Bobrowski (witek@bobrowski.co).
+"   Published under MIT license.
+"
+
 " Builder for generating docstring from intermediate representation.
 "
 " Parameters

@@ -1,3 +1,11 @@
+" 
+"   parser.vim
+"   witekbobrowski/vim-swiftdocstring 
+"
+"   Created by Witek Bobrowski (witek@bobrowski.co).
+"   Published under MIT license.
+"
+
 function! swiftdocstring#parser#parse(line_n)
     let parser = {}
 

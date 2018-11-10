@@ -1,3 +1,11 @@
+" 
+"   template.vim
+"   witekbobrowski/vim-swiftdocstring 
+"
+"   Created by Witek Bobrowski (witek@bobrowski.co).
+"   Published under MIT license.
+"
+
 " Factory of single line templates designated to use in docstring builder
 function! swiftdocstring#template#factory()
     let template = {}

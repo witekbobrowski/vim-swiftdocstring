@@ -1,3 +1,11 @@
+" 
+"   swiftdocstring.vim
+"   witekbobrowski/vim-swiftdocstring 
+"
+"   Created by Witek Bobrowski (witek@bobrowski.co).
+"   Published under MIT license.
+"
+
 function! swiftdocstring#docstring_current()
     let l:intermediate_representation = swiftdocstring#parser#parse(line('.'))
     let l:template = swiftdocstring#template#factory()

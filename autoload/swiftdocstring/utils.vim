@@ -1,3 +1,11 @@
+" 
+"   utils.vim
+"   witekbobrowski/vim-swiftdocstring 
+"
+"   Created by Witek Bobrowski (witek@bobrowski.co).
+"   Published under MIT license.
+"
+
 " Merge all lines from list of string to a single string
 function! swiftdocstring#utils#merge(lines)
     let l:text = ''
