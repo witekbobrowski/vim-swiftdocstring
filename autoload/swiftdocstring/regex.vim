@@ -12,7 +12,7 @@ function! g:swiftdocstring#regex#function_parameters(context)
 endfunction
 
 function! g:swiftdocstring#regex#function_throws(context)
-    let l:pattern = '\v\(@<=(.|\s)*\)@=(.|\s)*[\<throws\>]+'
+    let l:pattern = '\v\(@<=(.|\s)*\)@=(.|\s)*(throws)+'
     return match(a:context, l:pattern)
 endfunction
 
