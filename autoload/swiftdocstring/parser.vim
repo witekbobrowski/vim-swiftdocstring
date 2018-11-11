@@ -35,23 +35,21 @@ function! s:get_context(line_n, options)
 endfunction
 
 function! s:parse(lines)
-        let l:keyword = s:get_keyword(a:lines) 
-		if index(['let', 'var'], l:keyword) >= 0
-			return {'property': {}}
-        elseif index(['protocol', 'class', 'struct', 'enum'], l:keyword) >= 0
-            return s:parse_type(l:keyword, a:lines)
-        elseif index(['init', 'func'], l:keyword) >= 0
-            return s:parse_function(a:lines)
-		else 
-            return {}
-		endif
+    let l:keyword = s:get_keyword(a:lines) 
+    if index(['let', 'var'], l:keyword) >= 0
+        return {'property': {}}
+    elseif index(['protocol', 'class', 'struct', 'enum'], l:keyword) >= 0
+        return s:parse_type(l:keyword, a:lines)
+    elseif index(['init', 'func'], l:keyword) >= 0
+        return s:parse_function(a:lines)
+    else 
+        return {}
+    endif
 endfunction
 
 function! s:parse_function(lines)
-    let l:function_parameters_pattern = '\v\(@<=(.|\s)*\)@='
-    let l:function_returns_pattern = '\v\(@<=(.|\s)*\)@=(.|\s)*[->]+'
-    let l:scope = swiftdocstring#utils#merge(a:lines)  
-    let l:raw_parameters = matchstr(l:scope, l:function_parameters_pattern)
+    let l:context = swiftdocstring#utils#merge(a:lines)  
+    let l:raw_parameters = swiftdocstring#regex#function_parameters(l:context)
     let l:parameters = []
     for raw_parameter in split(l:raw_parameters, ',')
         let l:components = split(raw_parameter, ':')
@@ -61,7 +59,10 @@ function! s:parse_function(lines)
     if len(l:parameters) != 0
         let l:function_info = {'parameters': l:parameters}
     endif
-    if match(l:scope, l:function_returns_pattern) != -1
+    if swiftdocstring#regex#function_throws(l:context) != -1
+        let l:function_info['throws'] = 'true'
+    endif
+    if swiftdocstring#regex#function_returns(l:context) != -1
         let l:function_info['returns'] = 'true'
     endif
     return {'function': l:function_info}
