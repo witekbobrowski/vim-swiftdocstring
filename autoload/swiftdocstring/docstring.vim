@@ -116,14 +116,14 @@ endfunction
 function! s:update_with_delimiter(lines, delimiter_type, template)
     let l:updated = []
     let l:prefix = ''
-    if a:delimiter_type ==# 1 " multi-line 
+    if a:delimiter_type ==# 'multi-line' 
         let l:prefix = ' '
         call add(l:updated, a:template.multi_line_begin())
-    elseif a:delimiter_type ==# 0 " single-line 
+    elseif a:delimiter_type ==# 'single-line' 
         let l:prefix = a:template.single_line()
     endif 
     let l:updated += swiftdocstring#utils#prefixed_strings(a:lines, l:prefix)
-    if a:delimiter_type ==# 1 "multi-line
+    if a:delimiter_type ==# 'multi-line'
         call add(l:updated, a:template.multi_line_end())
     endif
     return l:updated

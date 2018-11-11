@@ -7,10 +7,15 @@
 "
 
 function! swiftdocstring#docstring_current()
-    let l:options = {}
-    let l:parsed = swiftdocstring#parser#parse(line('.'), l:options)
+    call s:docstring(line('.'))
+endfunction
+
+" Main function that parses context to Intermediate Representation for given
+" line to generate docstring that is being outputted to the file.
+function! s:docstring(line)
+    let l:options = swiftdocstring#options#build() 
+    let l:parsed = swiftdocstring#parser#parse(a:line, l:options)
     let l:template = swiftdocstring#template#factory()
-    let l:options['delimiter-type'] = g:swiftdocstring#use_multi_line_delimiter
     let l:docstring = swiftdocstring#docstring#build(l:parsed, l:template, l:options)
-    call swiftdocstring#utils#output(l:docstring, l:options['target-line-number'])
+    call swiftdocstring#utils#output(l:docstring, l:options)
 endfunction
