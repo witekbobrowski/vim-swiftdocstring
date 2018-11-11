@@ -6,7 +6,7 @@
 "   Published under MIT license.
 "
 
-function! swiftdocstring#parser#parse(line_n, options)
+function! g:swiftdocstring#parser#parse(line_n, options)
     let parser = {}
 
     function! parser.parse(self, line_n, options)

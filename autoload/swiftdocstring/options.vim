@@ -8,7 +8,7 @@
 
 " Public builder of dictionary containing user-defined and context related 
 " options that will be used to generate docstring.
-function! swiftdocstring#options#build()
+function! g:swiftdocstring#options#build()
     let l:options = {}
 
     call s:retrive_delimiter_option(l:options)

@@ -7,7 +7,7 @@
 "
 
 " Factory of single line templates designated to use in docstring builder
-function! swiftdocstring#template#factory()
+function! g:swiftdocstring#template#factory()
     let template = {}
     
     function! template.single_line()

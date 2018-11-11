@@ -6,7 +6,7 @@
 "   Published under MIT license.
 "
 
-function! swiftdocstring#docstring_current()
+function! g:swiftdocstring#docstring_current()
     call s:docstring(line('.'))
 endfunction
 

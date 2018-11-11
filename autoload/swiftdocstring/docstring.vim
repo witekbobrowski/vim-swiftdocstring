@@ -14,7 +14,7 @@
 " - template: Object with methods that returns appropriate docstring parts. 
 " - options: Dictionary with user defined or contex related options that are
 "   used during generation process.
-function! swiftdocstring#docstring#build(intermediate_representaiton, template, options)
+function! g:swiftdocstring#docstring#build(intermediate_representaiton, template, options)
     let l:lines = s:generate(a:intermediate_representaiton, a:template)
     let l:updated = s:update_with_options(l:lines, a:options, a:template)
     let a:options['test'] = 'DUPA'
