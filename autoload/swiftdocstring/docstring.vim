@@ -36,20 +36,36 @@ endfunction
 
 " Generating docstring for Swift funcitons from Intermediate Representation.
 function! s:generate_from_function(function_ir, template)
-    let l:lines = [a:template.simple()]
+    let l:lines = [] 
     if has_key(a:function_ir, 'parameters')
-        call add(l:lines, a:template.empty())
-        call add(l:lines, a:template.parameters())
-        for parameter in a:function_ir['parameters']
-             call add(l:lines, a:template.parameter(parameter))
-        endfor
+        let l:params = a:function_ir['parameters']
+        let l:lines = s:generate_from_parameters(l:params, a:template)
+    endif
+    if has_key(a:function_ir, 'throws')
+        call add(l:lines, a:template.throws())
     endif
     if has_key(a:function_ir, 'returns')
-        if !has_key(a:function_ir, 'parameters')
-            call add(l:lines, a:template.empty())
-        endif
         call add(l:lines, a:template.returns())
     endif
+    if len(l:lines) !=# 0
+        let l:lines = [a:template.empty()] + l:lines
+    endif
+    return [a:template.simple()] + l:lines
+endfunction
+
+" Generate docstring for parameters in function
+function! s:generate_from_parameters(parameters, template)
+    " Early exit if there is a only one parameter
+    if len(a:parameters) ==# 1 
+        return [a:template.parameter_single(a:parameters[0])]
+    endif
+    " Otherwise proceed normally with iterating over parameters
+    let l:lines = []
+    call add(l:lines, a:template.empty())
+    call add(l:lines, a:template.parameters())
+    for parameter in a:parameters
+        call add(l:lines, a:template.parameter(parameter))
+    endfor
     return l:lines
 endfunction
 
