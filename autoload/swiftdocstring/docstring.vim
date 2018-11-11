@@ -17,6 +17,7 @@
 function! swiftdocstring#docstring#build(intermediate_representaiton, template, options)
     let l:lines = s:generate(a:intermediate_representaiton, a:template)
     let l:updated = s:update_with_options(l:lines, a:options, a:template)
+    let a:options['test'] = 'DUPA'
     return l:updated 
 endfunction
 

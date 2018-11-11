@@ -10,9 +10,9 @@ function! swiftdocstring#parser#parse(line_n, options)
     let parser = {}
 
     function! parser.parse(self, line_n, options)
-        let l:result = a:self.get_context(a:self, a:line_n, a:options)
-        let l:converted = a:self.convert(a:self, l:result['context'])
-        return {'parsed': l:converted, 'options': l:result['options']}
+        let l:context = a:self.get_context(a:self, a:line_n, a:options)
+        let l:converted = a:self.convert(a:self, l:context)
+        return l:converted
     endfunction
 
     function! parser.get_context(self, line_n, options)
@@ -34,7 +34,7 @@ function! swiftdocstring#parser#parse(line_n, options)
 			let l:i += 1
 			let l:lines += [getline(a:line_n + l:i)]
         endwhile
-        return {'context': l:lines, 'options': a:options}
+        return l:lines
     endfunction
 
     function! parser.get_main_keyword(self, lines)
