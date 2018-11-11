@@ -138,3 +138,35 @@ function! g:swiftdocstring#parser#parse(line_n, options)
     return parser.parse(parser, a:line_n, a:options)
 endfunction
 
+function! s:get_context(line_n, options)
+
+endfunction
+
+function! s:parse(context)
+
+endfunction
+
+function! s:parse_function(context)
+
+endfunction
+
+function! s:parse_enum(context)
+
+endfunction
+
+function! s:get_keyword(lines)
+
+endfunction
+
+function! s:is_full_context(lines, keyword)
+
+endfunction
+
+function! s:is_full_enum_scope(lines, keyword)
+
+endfunction
+
+function! s:is_full_func_scope(lines, keyword)
+
+endfunction
+
