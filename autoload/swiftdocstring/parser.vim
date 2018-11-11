@@ -49,15 +49,10 @@ endfunction
 
 function! s:parse_function(lines)
     let l:context = swiftdocstring#utils#merge(a:lines)  
-    let l:raw_parameters = swiftdocstring#regex#function_parameters(l:context)
-    let l:parameters = []
-    for raw_parameter in split(l:raw_parameters, ',')
-        let l:components = split(raw_parameter, ':')
-        call add(l:parameters, split(l:components[0], ' ')[-1])
-    endfor
     let l:function_info = {}
-    if len(l:parameters) != 0
-        let l:function_info = {'parameters': l:parameters}
+    let l:parameters = s:parse_function_parameters(l:context)
+    if !empty(l:parameters)
+        let l:function_info['parameters'] = l:parameters
     endif
     if swiftdocstring#regex#function_throws(l:context) != -1
         let l:function_info['throws'] = 'true'
@@ -66,6 +61,16 @@ function! s:parse_function(lines)
         let l:function_info['returns'] = 'true'
     endif
     return {'function': l:function_info}
+endfunction
+
+function! s:parse_function_parameters(context)
+    let l:raw_parameters = swiftdocstring#regex#function_parameters(a:context)
+    let l:parameters = []
+    for raw_parameter in split(l:raw_parameters, ',')
+        let l:components = split(raw_parameter, ':')
+        call add(l:parameters, split(l:components[0], ' ')[-1])
+    endfor
+    return l:parameters
 endfunction
 
 function! s:parse_type(type, lines)

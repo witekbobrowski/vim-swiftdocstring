@@ -48,7 +48,7 @@ function! s:generate_from_function(function_ir, template)
     if has_key(a:function_ir, 'returns')
         call add(l:lines, a:template.returns())
     endif
-    if len(l:lines) !=# 0
+    if !empty(l:lines)
         let l:lines = [a:template.empty()] + l:lines
     endif
     return [a:template.simple()] + l:lines
@@ -62,7 +62,6 @@ function! s:generate_from_parameters(parameters, template)
     endif
     " Otherwise proceed normally with iterating over parameters
     let l:lines = []
-    call add(l:lines, a:template.empty())
     call add(l:lines, a:template.parameters())
     for parameter in a:parameters
         call add(l:lines, a:template.parameter(parameter))
