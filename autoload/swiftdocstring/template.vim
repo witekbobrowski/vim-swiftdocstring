@@ -37,13 +37,21 @@ function! swiftdocstring#template#factory()
     function! template.returns()
         return ' - Returns: return value description'
     endfunction
+
+    function! template.throws()
+        return ' - Throws: throws value description'
+    endfunction
+
+    function! template.parameter_single(parameter)
+        return ' - Parameter ' . a:parameter . ': ' . a:parameter . ' description'
+    endfunction
     
     function! template.parameter(parameter)
-        return '   - '. a:parameter. ': '. a:parameter. ' description'
+        return '   - '. a:parameter . ': ' . a:parameter . ' description'
     endfunction
 
     function! template.enumCase(case)
-        return ' - '. a:case. ': '. a:case. ' description'
+        return ' - ' . a:case . ': ' . a:case . ' description'
     endfunction
 
     return template
