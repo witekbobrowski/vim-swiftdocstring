@@ -7,11 +7,10 @@
 "
 
 function! swiftdocstring#docstring_current()
-    let l:intermediate_representation = swiftdocstring#parser#parse(line('.'))
+    let l:parsed = swiftdocstring#parser#parse(line('.'), {})
     let l:template = swiftdocstring#template#factory()
-    let l:options = {}
-    let l:options['target-line-number'] = line('.') 
+    let l:options = l:parsed['options'] 
     let l:options['delimiter-type'] = g:swiftdocstring#use_multi_line_delimiter
-    let l:docstring = swiftdocstring#docstring#build(l:intermediate_representation, l:template, l:options)
-    call swiftdocstring#utils#output(l:docstring, line('.') - 1)
+    let l:docstring = swiftdocstring#docstring#build(l:parsed['parsed'], l:template, l:options)
+    call swiftdocstring#utils#output(l:docstring, l:options['target-line-number'])
 endfunction

@@ -6,16 +6,16 @@
 "   Published under MIT license.
 "
 
-function! swiftdocstring#parser#parse(line_n)
+function! swiftdocstring#parser#parse(line_n, options)
     let parser = {}
 
-    function! parser.parse(self, line_n)
-        let l:context = a:self.get_context(a:self, a:line_n)
-        let l:converted = a:self.convert(a:self, l:context)
-        return l:converted
+    function! parser.parse(self, line_n, options)
+        let l:result = a:self.get_context(a:self, a:line_n, a:options)
+        let l:converted = a:self.convert(a:self, l:result['context'])
+        return {'parsed': l:converted, 'options': l:result['options']}
     endfunction
 
-    function! parser.get_context(self, line_n)
+    function! parser.get_context(self, line_n, options)
         let l:lines = [getline(a:line_n)]
 		let l:main_keyword = self.get_main_keyword(a:self, l:lines)
         while empty(l:main_keyword) 
@@ -25,6 +25,7 @@ function! swiftdocstring#parser#parse(line_n)
 			let l:lines = [getline(a:line_n - len(l:lines))] + l:lines
 			let l:main_keyword = self.get_main_keyword(a:self, l:lines)
         endwhile
+        let a:options['target-line-number'] = a:line_n - len(l:lines) 
 		let l:i = 0
         while !self.is_full_context(a:self, l:lines, l:main_keyword) 
             if a:line_n + l:i > line('$')
@@ -33,7 +34,7 @@ function! swiftdocstring#parser#parse(line_n)
 			let l:i += 1
 			let l:lines += [getline(a:line_n + l:i)]
         endwhile
-        return l:lines
+        return {'context': l:lines, 'options': a:options}
     endfunction
 
     function! parser.get_main_keyword(self, lines)
@@ -134,6 +135,6 @@ function! swiftdocstring#parser#parse(line_n)
         return l:cases
     endfunction
 
-    return parser.parse(parser, a:line_n)
+    return parser.parse(parser, a:line_n, a:options)
 endfunction
 
