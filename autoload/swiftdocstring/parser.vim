@@ -14,22 +14,31 @@ endfunction
 
 function! s:get_context(line_n, options)
     let l:lines = [getline(a:line_n)]
-    let l:main_keyword = s:get_keyword(l:lines)
-    while empty(l:main_keyword) 
+    let l:keyword = s:get_keyword(l:lines)
+    while empty(l:keyword) 
         if a:line_n - len(l:lines) < 0
             return []
         endif
-    	let l:lines = [getline(a:line_n - len(l:lines))] + l:lines
-        let l:main_keyword = s:get_keyword(l:lines)
+        let l:current = getline(a:line_n - len(l:lines))
+    	let l:lines = [l:current] + l:lines
+        let l:keyword = s:get_keyword([l:current])
     endwhile
     let a:options['target-line-number'] = a:line_n - len(l:lines) 
     let l:i = 0
-    while !s:is_full_context(l:lines, l:main_keyword) 
+    while !s:is_full_context(l:lines, l:keyword) 
+		let l:i += 1
         if a:line_n + l:i > line('$')
             return []
         endif
-		let l:i += 1
-    	let l:lines += [getline(a:line_n + l:i)]
+        let l:current = getline(a:line_n + l:i) 
+        " Special check for function declarations in protocols
+        " Return previous lines if current contains other keyword
+        echom s:get_keyword([l:current])
+        if l:keyword ==# 'func' && !empty(s:get_keyword([l:current]))
+            return l:lines
+        endif
+        " Proceed normally
+        call add(l:lines, l:current)
     endwhile
     return l:lines
 endfunction
@@ -92,14 +101,8 @@ function! s:parse_enum(lines)
 endfunction
 
 function! s:get_keyword(lines)
-    let l:keywords = ['let', 'var', 'protocol', 'class', 'struct', 'enum', 'func', 'init']
-    for line in a:lines
-        let l:matched = s:match_line(line, l:keywords) 
-        if !empty(l:matched)
-            return l:matched
-        endif 
-    endfor
-    return ''
+    let l:context = g:swiftdocstring#utils#merge(a:lines)
+    return g:swiftdocstring#regex#match_keyword(l:context)
 endfunction
 
 function! s:is_full_context(lines, keyword)
@@ -109,7 +112,7 @@ function! s:is_full_context(lines, keyword)
     elseif 'enum' ==# a:keyword
         return s:is_full_enum_scope(a:lines)
     elseif index(['init', 'func'], a:keyword) >= 0
-        return g:swiftdocstring#regex#is_full_function_context(l:context)
+        return g:swiftdocstring#regex#is_full_function_context(l:context) != -1
     else
         return 0
     endif
@@ -125,13 +128,3 @@ function! s:match_cases(line, keywords)
     let l:cases = []
     return l:cases
 endfunction
-
-function! s:match_line(line, keywords)
-    for keyword in a:keywords
-        if a:line =~ '\<' . keyword . '\>'
-            return keyword 
-        endif
-    endfor
-    return 0
-endfunction
-
