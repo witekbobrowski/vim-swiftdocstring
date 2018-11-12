@@ -14,6 +14,20 @@ function! g:swiftdocstring#regex#match_keyword(context)
     return matchstr(a:context, l:pattern)
 endfunction
 
+" Enum matching
+
+" Check if given string contains full function context
+function! g:swiftdocstring#regex#is_full_enum_context(context)
+    let l:pattern = '\v(enum)@<=(.|\s)*'
+    return match(a:context, l:pattern)
+endfunction
+
+" Retrive functions parameters from declaration
+function! g:swiftdocstring#regex#match_enum_cases(context)
+    let l:pattern = ''
+    return matchstr(a:context, l:pattern)
+endfunction
+
 " Function matching
 
 " Check if given string contains full function context
@@ -23,7 +37,7 @@ function! g:swiftdocstring#regex#is_full_function_context(context)
 endfunction
 
 " Retrive functions parameters from declaration
-function! g:swiftdocstring#regex#function_parameters(context)
+function! g:swiftdocstring#regex#match_function_parameters(context)
     let l:pattern = '\v\(@<=(.|\s)*\)@='
     return matchstr(a:context, l:pattern)
 endfunction
