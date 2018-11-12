@@ -103,12 +103,13 @@ function! s:get_keyword(lines)
 endfunction
 
 function! s:is_full_context(lines, keyword)
+    let l:context = g:swiftdocstring#utils#merge(a:lines)
     if index(['let', 'var', 'protocol', 'class', 'struct'], a:keyword) >= 0
         return 1
     elseif 'enum' ==# a:keyword
         return s:is_full_enum_scope(a:lines)
     elseif index(['init', 'func'], a:keyword) >= 0
-        return s:is_full_func_scope(a:lines)
+        return g:swiftdocstring#regex#is_full_function_context(l:context)
     else
         return 0
     endif
@@ -118,15 +119,6 @@ function! s:is_full_enum_scope(lines, keyword)
 	" TODO: Check if all the context for docstring is present 
     let l:full_scope_regex = '\v\{\n((\t.*\n)|(^$\n))*^\}'
     return 1
-endfunction
-
-function! s:is_full_func_scope(lines)
-    for line in a:lines
-        if line =~# '{'
-            return 1
-        endif
-    endfor
-    return 0
 endfunction
 
 function! s:match_cases(line, keywords)
