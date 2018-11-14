@@ -10,7 +10,7 @@
 
 " Retrive keyword if present in string
 function! g:swiftdocstring#regex#match_keyword(context)
-    let l:pattern = '\v(let|var|func|init|protocol|class|struct|enum)'
+    let l:pattern = '\v(let|var|case|func|init|protocol|class|struct|enum)'
     return matchstr(a:context, l:pattern)
 endfunction
 

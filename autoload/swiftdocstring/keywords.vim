@@ -11,7 +11,7 @@ function! g:swiftdocstring#keywords#factory()
     let l:self = {}
 
     function! self.properties()
-        return ['let', 'var']
+        return ['let', 'var', 'case']
     endfunction
 
     function! self.functions()
