@@ -2,6 +2,15 @@
 
 A simple vim/neovim plugin that provides Xcode-like docstring templates for Swift.
 
+## Features
+
+- Generate Swift docstrings for types, funcitons and properties
+- Support for `///` and `/** ... */` delimiters 
+- Xcode-like style of docstrings 
+- Context awarness that puts Xcode docstring generation to shame
+- Blazing fast parsing using regular expressions
+- Zero dependency (**100%** vim-script)
+
 ## Installation
 
 ##### vim-plug
