@@ -1,4 +1,4 @@
-*swiftdocstring.txt* Vim plugin for generating docstrings in Swift sources
+*swiftdocstring.txt*                              Last change: 2018 November 14
 
                    _  __ _      _                _        _             
                   (_)/ _| |    | |              | |      (_)            
@@ -10,9 +10,110 @@
                                                                   |___/ 
 
 *Author*: Witek Bobrowski 
-*Github*: https://github.com/witekbobrowski
-*Contact*: https://twitter.com/witekbobrowski
 
 ===============================================================================
 CONTENTS                                              *swiftdocstring-contents*
 
+
+    1.Intro...................................|swiftdocstring|
+    2.Installation............................|swiftdocstring-install|
+    3.Features................................|swiftdocstring-features|
+    4.Options.................................|swiftdocstrin-options|
+    5.Key mappings............................|swiftdocstring-mappings|
+    6.About...................................|swiftdocstring-about|
+    7.License.................................|swiftdocstring-license|
+
+===============================================================================
+1. Intro                                                   *vim-swiftdocstring*
+
+A simple vim/neovim plugin that provides Xcode-like docstring templates for 
+Swift. 
+
+===============================================================================
+2. Installation                                        *swiftdocstring-install*
+
+Install the plugin using any of the popular vim plugin managers.
+
+Examples:
+
+- vim-plug
+    Plug 'witekbobrowski/vim-swiftdocstring'
+
+- Vundle
+    Plugin 'witekbobrowski/vim-swiftdocstring'
+
+- Dein
+    call dein#add('witekbobrowski/vim-swiftdocstring')
+
+You could always import the plugin files manually by cloning the repository and
+pasting files in vim directories.
+
+===============================================================================
+3. Features                                           *swiftdocstring-features*
+
+- Generate Swift docstrings for types, funcitons and properties
+- Support for /// and /** ... */ delimiters
+- Xcode-like style of docstrings
+- Context awarness that puts Xcode docstring generation to shame
+- Blazing fast parsing using regular expressions
+- Zero dependency (100% vim-script)
+
+===============================================================================
+4. Options                                             *swiftdocstring-options*
+
+The interface provided by the plugin is super simple right now. Add the 
+following to your .vimrc
+
+- Generate docstring for current context on 'Tab' + '/':
+    autocmd Filetype swift nnoremap <silent><tab>/ :SwiftDocstringCurrent<CR>
+
+===============================================================================
+5. Key mappings                                       *swiftdocstring-mappings*
+
+- Use Multi-line delimiter '/** ... */' instead of single-line '///'
+    let g:swiftdocstring#use_multi_line_delimiter = 1
+
+===============================================================================
+6. About                                                 *swiftdocstring-about*
+
+This plugin was made under the desire to have a powerfull Swift development
+envirionment in vim. Although the plugin brings only a small feature ported
+from Xcode, I want to add at least one brick to the wall. This is as far as
+I can go at the moment with the amount of time it took to create this peace 
+of code. I intend it to remain simple, yet useful. Contributions are welcomed.
+
+Feel free to contact me using any of the options below and consider leaving it
+a star on GitHub.
+
+    e-mail - witek@bobrowski.co
+    twitter - @witekbobrowski
+    github - @witekbobrowski
+    url - https://github.com/witekbobrowski/vim-swiftdocstring
+
+===============================================================================
+7. License                                             *swiftdocstring-license*
+
+The plugin in licensed under MIT license so do what ever you want with it.
+-------------------------------------------------------------------------------
+MIT License
+
+Copyright (c) 2018 Witek Bobrowski
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+-------------------------------------------------------------------------------
