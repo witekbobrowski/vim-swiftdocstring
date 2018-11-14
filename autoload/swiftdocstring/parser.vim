@@ -20,11 +20,13 @@ function! g:swiftdocstring#parser#parse(line_n, options)
 endfunction
 
 function! s:get_context(line_n, options)
-    let l:lines = [getline(a:line_n)]
-    let l:keyword = s:get_keyword(l:lines)
+    let l:lines = []
+    let l:keyword = '' 
+    " Traverse up to get keyword
     while empty(l:keyword) 
-        if a:line_n - len(l:lines) < 0
-            return []
+        " Break loop if reached beginning of file
+        if a:line_n - len(l:lines) <= 0
+            break
         endif
         let l:current = getline(a:line_n - len(l:lines))
     	let l:lines = [l:current] + l:lines
@@ -32,8 +34,10 @@ function! s:get_context(line_n, options)
     endwhile
     let a:options['target-line-number'] = a:line_n - len(l:lines) 
     let l:i = 0
+    " Traverse down as long as the context is not full
     while !s:is_full_context(l:lines, l:keyword) 
 		let l:i += 1
+        " Break loop if reached end of file
         if a:line_n + l:i > line('$')
             return []
         endif

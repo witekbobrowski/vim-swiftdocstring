@@ -32,7 +32,7 @@ endfunction
 
 " Check if given string contains full function context
 function! g:swiftdocstring#regex#is_full_function_context(context)
-    let l:pattern = '\v(func)@<=(.|\s)*\(@<=(.|\s)*\)@=(.|\s)*(\{|\})+'
+    let l:pattern = '\v(func|init)@<=(.|\s)*\(@<=(.|\s)*\)@=(.|\s)*(\{|\})+'
     return g:swiftdocstring#utils#match(a:context, l:pattern)
 endfunction
 
