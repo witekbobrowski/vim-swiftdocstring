@@ -46,3 +46,7 @@ function! g:swiftdocstring#utils#indented_strings(strings, n_spaces)
     return swiftdocstring#utils#prefixed_strings(a:strings, l:prefix) 
 endfunction
 
+" Warpper funciton for mapping result from match function to 0 or 1
+function! g:swiftdocstring#utils#match(text, pattern)
+    return match(a:text, a:pattern) != -1
+endfunction

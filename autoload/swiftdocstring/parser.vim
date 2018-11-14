@@ -54,9 +54,9 @@ function! s:is_full_context(lines, keyword)
     let l:keywords = g:swiftdocstring#keywords#factory()
     let l:context = g:swiftdocstring#utils#merge(a:lines)
     if index(l:keywords.functions(), a:keyword) >= 0
-        return g:swiftdocstring#regex#is_full_function_context(l:context) != -1
+        return g:swiftdocstring#regex#is_full_function_context(l:context)
     elseif index(['enum'], a:keyword) >= 0
-        return g:swiftdocstring#regex#is_full_enum_context(l:context) != -1
+        return g:swiftdocstring#regex#is_full_enum_context(l:context)
     else
         return 1
     endif
@@ -83,10 +83,10 @@ function! s:parse_function(lines)
     if !empty(l:parameters)
         let l:function_info['parameters'] = l:parameters
     endif
-    if swiftdocstring#regex#function_throws(l:context) != -1
+    if swiftdocstring#regex#function_throws(l:context)
         let l:function_info['throws'] = 1
     endif
-    if swiftdocstring#regex#function_returns(l:context) != -1
+    if swiftdocstring#regex#function_returns(l:context)
         let l:function_info['returns'] = 1
     endif
     return {'function': l:function_info}

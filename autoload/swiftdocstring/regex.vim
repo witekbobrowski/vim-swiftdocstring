@@ -19,7 +19,7 @@ endfunction
 " Check if given string contains full function context
 function! g:swiftdocstring#regex#is_full_enum_context(context)
     let l:pattern = '\v(enum)@<=(.|\s)*'
-    return match(a:context, l:pattern)
+    return g:swiftdocstring#utils#match(a:context, l:pattern)
 endfunction
 
 " Retrive functions parameters from declaration
@@ -33,7 +33,7 @@ endfunction
 " Check if given string contains full function context
 function! g:swiftdocstring#regex#is_full_function_context(context)
     let l:pattern = '\v(func)@<=(.|\s)*\(@<=(.|\s)*\)@=(.|\s)*(\{|\})+'
-    return match(a:context, l:pattern)
+    return g:swiftdocstring#utils#match(a:context, l:pattern)
 endfunction
 
 " Retrive functions parameters from declaration
@@ -45,11 +45,11 @@ endfunction
 " Check if function throws
 function! g:swiftdocstring#regex#function_throws(context)
     let l:pattern = '\v\(@<=(.|\s)*\)@=(.|\s)*(throws)+'
-    return match(a:context, l:pattern)
+    return g:swiftdocstring#utils#match(a:context, l:pattern)
 endfunction
 
 " Check if function returns
 function! g:swiftdocstring#regex#function_returns(context)
     let l:pattern = '\v\(@<=(.|\s)*\)@=(.|\s)*[->]+'
-    return match(a:context, l:pattern)
+    return g:swiftdocstring#utils#match(a:context, l:pattern)
 endfunction
