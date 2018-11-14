@@ -6,10 +6,17 @@
 "   Published under MIT license.
 "
 
+" Main function to trigger parsing process, which consists of retrievied the
+" context from passed line and finally parsing it to the intermediate
+" representation.
+"
+" Parameters
+" - line_n: An intiger value referencinf the line number in current file
+" - options: Dictionary with user defined or contex related options that could
+"       be updated during the parsing procedure.
 function! g:swiftdocstring#parser#parse(line_n, options)
     let l:context = s:get_context(a:line_n, a:options)
-    let l:converted = s:parse(l:context)
-    return l:converted
+    return s:parse(l:context)
 endfunction
 
 function! s:get_context(line_n, options)
