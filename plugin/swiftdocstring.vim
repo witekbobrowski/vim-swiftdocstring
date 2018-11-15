@@ -11,8 +11,9 @@ if exists('g:loaded_swiftdocstring')
 endif
 let g:loaded_swiftdocstring = 1
 
-" Public command
+" Public commands
 command! -nargs=0 SwiftDocstringCurrent call g:swiftdocstring#docstring_current()
+command! -nargs=0 SwiftDocstringFunctions call g:swiftdocstring#docstring_functions()
 
 " User defined options
 let g:swiftdocstring#use_multi_line_delimiter = 0
