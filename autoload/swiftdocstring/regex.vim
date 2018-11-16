@@ -53,3 +53,17 @@ function! g:swiftdocstring#regex#function_returns(context)
     let l:pattern = '\v\(@<=(.|\s)*\)@=(.|\s)*[->]+'
     return g:swiftdocstring#utils#match(a:context, l:pattern)
 endfunction
+
+" Comment/Docstring matching
+
+" Check in context is begins with Swift comment delimiters
+function! g:swiftdocstring#regex#is_comment(context)
+    let l:pattern = '\v^(\s)*(/{2}|\*/|/\*)'
+    return g:swiftdocstring#utils#match(a:context, l:pattern)
+endfunction
+
+" Check in context is begins with Swift comment delimiters
+function! g:swiftdocstring#regex#is_docstring(context)
+    let l:pattern = '\v^(\s)*(/{3}|\*/|/\*\*)'
+    return g:swiftdocstring#utils#match(a:context, l:pattern)
+endfunction
