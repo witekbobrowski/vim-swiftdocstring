@@ -17,7 +17,10 @@
 " Returns: Internal representation that got parsed
 function! g:swiftdocstring#parser#parse(line_n, options)
     let l:context = s:get_context(a:line_n, a:options)
-    return s:parse(l:context)
+    if empty(l:context)
+        return {}
+    endif 
+    return s:parse(l:context, a:options)
 endfunction
 
 " Retrive a list of numbers that represent lines that match any of the passed
@@ -28,17 +31,8 @@ endfunction
 function! g:swiftdocstring#parser#get_lines_of_keywords(keywords)
     let l:matched = []
     for line_number in range(0, line('$'))
-        let l:line = getline(line_number)
-        " Skip iteration if line is a comment
-        if g:swiftdocstring#regex#is_comment(l:line)
-            continue
-        endif
-        " Skip iteration if line is docstring
-        if g:swiftdocstring#regex#is_docstring(l:line)
-            continue
-        endif
-        let l:keyword = g:swiftdocstring#regex#match_keyword(l:line)
-        " Skip if not a single function keyword was matched
+        let l:keyword = s:get_keyword(line_number)
+        " Skip if not a single requested keyword was matched
         if index(a:keywords, l:keyword) == -1 
             continue
         endif
@@ -52,6 +46,56 @@ function! g:swiftdocstring#parser#get_lines_of_keywords(keywords)
     return l:matched
 endfunction
 
+" Get keyword if present at line with passed keyword. This function rejects
+" lines that are comments or docstrings.
+"
+" Parameter line_n: number of line in burrent buffer
+" Returns: Keyword if gets matched, else empty string
+function! s:get_keyword(line_n)
+    let l:line = getline(a:line_n)
+    " Return empty string if line is a comment
+    if g:swiftdocstring#regex#is_comment(l:line)
+        return ''
+    endif
+    " Return empty string if line is docstring
+    if g:swiftdocstring#regex#is_docstring(l:line)
+        return ''
+    endif
+    return g:swiftdocstring#regex#match_keyword(l:line)
+endfunction
+
+" Traverse up looking for a keyword in burrent buffer. This funciton will
+" return negative value if beginning of the file was reached or it stumbled
+" upon an empty line.
+"
+" Parameter line_n: number of line in burrent buffer
+" Returns: Keyword if gets matched, else empty string
+function! s:traverse_up_for_keyword(line_n)
+    let l:line_number = a:line_n
+    " While there are no keywords matched iterate over
+    while empty(s:get_keyword(l:line_number)) 
+        " If line is empty return with -1
+        if empty(getline(l:line_number))
+            return -1
+        endif
+        " Break loop if reached beginning of file
+        if l:line_number <= 0
+            return -1
+        endif
+        " Traverse one line above current
+        let l:line_number -= 1
+    endwhile
+    return l:line_number
+endfunction
+
+" Retrive context for passed line that will be used for parsing to
+" intermediate representation.
+"
+" Parameters
+" - line_n: An intiger value referencinf the line number in current file
+" - options: Dictionary with user defined or contex related options that could
+"       be updated during the parsing procedure.
+" Returns: List of lines relative to the context 
 function! s:get_context(line_n, options)
     " Skip iteration if line is a comment
     if g:swiftdocstring#regex#is_comment(getline(a:line_n))
@@ -61,40 +105,40 @@ function! s:get_context(line_n, options)
     if g:swiftdocstring#regex#is_docstring(getline(a:line_n))
         return [] 
     endif
-    let l:lines = []
-    let l:keyword = '' 
-    " Traverse up to get keyword
-    while empty(l:keyword) 
-        " Break loop if reached beginning of file
-        if a:line_n - len(l:lines) <= 0
-            break
-        endif
-        let l:current = getline(a:line_n - len(l:lines))
-    	let l:lines = [l:current] + l:lines
-        let l:keyword = s:get_keyword([l:current])
-    endwhile
-    let a:options['target-line-number'] = a:line_n - len(l:lines) 
-    let l:i = 0
+    let l:current_line_n = s:traverse_up_for_keyword(a:line_n)
+    " Return if could not get line for keyword
+    if l:current_line_n ==# -1
+        return []
+    endif
+
+    let l:lines = [getline(l:current_line_n)]
+    let l:keyword = s:get_keyword(l:current_line_n) 
+    let a:options['target-line-number'] = l:current_line_n -1
+
     " Traverse down as long as the context is not full
     while !s:is_full_context(l:lines, l:keyword) 
-		let l:i += 1
+		let l:current_line_n += 1
         " Break loop if reached end of file
-        if a:line_n + l:i > line('$')
+        if l:current_line_n > line('$')
             return []
         endif
-        let l:current = getline(a:line_n + l:i) 
         " Special check for function declarations in protocols
         " Return previous lines if current contains other keyword
-        echom s:get_keyword([l:current])
-        if l:keyword ==# 'func' && !empty(s:get_keyword([l:current]))
+        if l:keyword ==# 'func' && !empty(s:get_keyword(l:current_line_n))
             return l:lines
         endif
         " Proceed normally
-        call add(l:lines, l:current)
+        call add(l:lines, getline(l:current_line_n))
     endwhile
     return l:lines
 endfunction
 
+" Check if full context is present in lines for give keyword
+"
+" Parameters:
+" - lines: List of lines
+" - keyword: Swift keyword that defines how the context should look like
+" Returns: A boolean (0 or 1) if requirements are met
 function! s:is_full_context(lines, keyword)
     let l:keywords = g:swiftdocstring#keywords#factory()
     let l:context = g:swiftdocstring#utils#merge(a:lines)
@@ -107,9 +151,16 @@ function! s:is_full_context(lines, keyword)
     endif
 endfunction
 
-function! s:parse(lines)
+" An actual parsing method that takes the lines with the context and converts
+" them to an intermediate representation.
+"
+" Parameters:
+" - lines: List of lines
+" - options: Dictionary with options for parsing process 
+" Returns: Internal representation 
+function! s:parse(lines, options)
     let l:keywords = g:swiftdocstring#keywords#factory()
-    let l:keyword = s:get_keyword(a:lines) 
+    let l:keyword = s:get_keyword(a:options['target-line-number'] + 1) 
     if index(l:keywords.properties(), l:keyword) >= 0
         return {'property': {}}
     elseif index(l:keywords.types(), l:keyword) >= 0
@@ -121,6 +172,7 @@ function! s:parse(lines)
     endif
 endfunction
 
+" Helper function for parsing function context to intermediate representation
 function! s:parse_function(lines)
     let l:context = swiftdocstring#utils#merge(a:lines)  
     let l:function_info = {}
@@ -137,6 +189,7 @@ function! s:parse_function(lines)
     return {'function': l:function_info}
 endfunction
 
+" Helper function for parsing function parameters 
 function! s:parse_function_parameters(context)
     let l:raw = g:swiftdocstring#regex#match_function_parameters(a:context)
     let l:parameters = []
@@ -147,6 +200,7 @@ function! s:parse_function_parameters(context)
     return l:parameters
 endfunction
 
+" Helper function for parsing type context to intermediate representation
 function! s:parse_type(type, lines)
     let l:type_info = {}
     if 'enum' ==# a:type
@@ -157,14 +211,10 @@ function! s:parse_type(type, lines)
     return {'type': l:type_info}
 endfunction
 
+" Helper function for parsing enums 
 function! s:parse_enum(lines)
     let l:context = g:swiftdocstring#utils#merge(a:lines)
     let l:cases = g:swiftdocstring#regex#match_enum_cases(l:context)
     return {'cases': l:cases}
-endfunction
-
-function! s:get_keyword(lines)
-    let l:context = g:swiftdocstring#utils#merge(a:lines)
-    return g:swiftdocstring#regex#match_keyword(l:context)
 endfunction
 
