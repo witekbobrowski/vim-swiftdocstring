@@ -29,8 +29,22 @@ call dein#add('witekbobrowski/vim-swiftdocstring')
 ```
 
 ## Usage
-The interface provided by the plugin is super simple right now. Add the following
-to your `.vimrc`
+
+##### 🔨 Commands 
+- `:SwiftDocstringCurrent`
+
+    > Generates docstring for the context in the current line of the cursor
+
+- `:SwiftDocstringTypes`
+
+    > Generates docstrings for every type declaration in current buffer 
+
+- `:SwiftDocstringFunctions`
+
+    > Generates docstrings for every function declaration in current buffer
+
+
+For your own convenience add the following to your `.vimrc`
 
 ##### ⌨️ Mappings
 ```vim

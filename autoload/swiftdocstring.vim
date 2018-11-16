@@ -15,8 +15,14 @@ endfunction
 
 " Generate docstring for all functions in current file.
 function! g:swiftdocstring#docstring_functions()
-    let l:lines = []
-    call s:docstrings(l:lines)
+    let l:keywords = swiftdocstring#keywords#factory()
+    call s:docstrings_for(l:keywords.functions())
+endfunction
+
+" Generate docstring for all types in current file.
+function! g:swiftdocstring#docstring_types()
+    let l:keywords = swiftdocstring#keywords#factory()
+    call s:docstrings_for(l:keywords.types())
 endfunction
 
 " Private 
@@ -43,4 +49,10 @@ function! s:docstrings(lines)
     for line in reverse(a:lines)
         call s:docstring(line)
     endfor
+endfunction
+
+" Generate docstring for contexts with passed keywords
+function! s:docstrings_for(keywords)
+    let l:lines = g:swiftdocstring#parser#get_lines_of_keywords(a:keywords)
+    call s:docstrings(l:lines)
 endfunction

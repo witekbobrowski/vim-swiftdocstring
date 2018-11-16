@@ -14,12 +14,53 @@
 " - line_n: An intiger value referencinf the line number in current file
 " - options: Dictionary with user defined or contex related options that could
 "       be updated during the parsing procedure.
+" Returns: Internal representation that got parsed
 function! g:swiftdocstring#parser#parse(line_n, options)
     let l:context = s:get_context(a:line_n, a:options)
     return s:parse(l:context)
 endfunction
 
+" Retrive a list of numbers that represent lines that match any of the passed
+" keywords
+"
+" Parameter keywords: a list of Swift keywords that shoudl be matched 
+" Returns: A list of line numbers
+function! g:swiftdocstring#parser#get_lines_of_keywords(keywords)
+    let l:matched = []
+    for line_number in range(0, line('$'))
+        let l:line = getline(line_number)
+        " Skip iteration if line is a comment
+        if g:swiftdocstring#regex#is_comment(l:line)
+            continue
+        endif
+        " Skip iteration if line is docstring
+        if g:swiftdocstring#regex#is_docstring(l:line)
+            continue
+        endif
+        let l:keyword = g:swiftdocstring#regex#match_keyword(l:line)
+        " Skip if not a single function keyword was matched
+        if index(a:keywords, l:keyword) == -1 
+            continue
+        endif
+        " Skip iteration if the docstring already exists for the context
+        if g:swiftdocstring#regex#is_docstring(getline(line_number - 1))
+            continue
+        endif
+        " Add matched line number to the list
+        call add(l:matched, line_number)
+    endfor
+    return l:matched
+endfunction
+
 function! s:get_context(line_n, options)
+    " Skip iteration if line is a comment
+    if g:swiftdocstring#regex#is_comment(getline(a:line_n))
+        return [] 
+    endif
+    " Skip iteration if line is docstring
+    if g:swiftdocstring#regex#is_docstring(getline(a:line_n))
+        return [] 
+    endif
     let l:lines = []
     let l:keyword = '' 
     " Traverse up to get keyword
@@ -126,3 +167,4 @@ function! s:get_keyword(lines)
     let l:context = g:swiftdocstring#utils#merge(a:lines)
     return g:swiftdocstring#regex#match_keyword(l:context)
 endfunction
+
