@@ -16,8 +16,8 @@ function! g:swiftdocstring#utils#merge(lines)
 endfunction
 
 " Simple wrapper funciton that outputs text to line in current file
-function! g:swiftdocstring#utils#output(text, options)
-    call append(a:options['target-line-number'], a:text)
+function! g:swiftdocstring#utils#output(text, line)
+    call append(a:line, a:text)
 endfunction
 
 " Concatenate string with a prefix

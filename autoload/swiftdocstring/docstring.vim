@@ -17,7 +17,6 @@
 function! g:swiftdocstring#docstring#build(intermediate_representaiton, template, options)
     let l:lines = s:generate(a:intermediate_representaiton, a:template)
     let l:updated = s:update_with_options(l:lines, a:options, a:template)
-    let a:options['test'] = 'DUPA'
     return l:updated 
 endfunction
 
@@ -102,8 +101,8 @@ function! s:update_with_options(lines, options, template)
         let l:updated = s:update_with_delimiter(l:updated, l:delimiter, a:template) 
     endif
     
-    if has_key(a:options, 'target-line-number')
-        let l:line_number = a:options['target-line-number'] + 1
+    if has_key(a:options, 'context-start-line-number')
+        let l:line_number = a:options['context-start-line-number']
         let l:updated = s:update_with_indentation(l:updated, l:line_number)
     endif
 

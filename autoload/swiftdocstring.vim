@@ -36,10 +36,15 @@ function! s:docstring(line)
 
     " Begin flow
     let l:parsed = swiftdocstring#parser#parse(a:line, l:options)
+    " Return if there is no context detected and parsed
+    if empty(l:parsed)
+        return
+    endif
     let l:docstring = swiftdocstring#docstring#build(l:parsed, l:template, l:options)
 
     " Output generated docstring
-    call swiftdocstring#utils#output(l:docstring, l:options)
+    let l:line = l:options['context-start-line-number'] - 1
+    call swiftdocstring#utils#output(l:docstring, l:line)
 endfunction
 
 " Wraper function for generating docstring in multiple lines

@@ -113,7 +113,7 @@ function! s:get_context(line_n, options)
 
     let l:lines = [getline(l:current_line_n)]
     let l:keyword = s:get_keyword(l:current_line_n) 
-    let a:options['target-line-number'] = l:current_line_n -1
+    let a:options['context-start-line-number'] = l:current_line_n
 
     " Traverse down as long as the context is not full
     while !s:is_full_context(l:lines, l:keyword) 
@@ -160,7 +160,7 @@ endfunction
 " Returns: Internal representation 
 function! s:parse(lines, options)
     let l:keywords = g:swiftdocstring#keywords#factory()
-    let l:keyword = s:get_keyword(a:options['target-line-number'] + 1) 
+    let l:keyword = s:get_keyword(a:options['context-start-line-number']) 
     if index(l:keywords.properties(), l:keyword) >= 0
         return {'property': {}}
     elseif index(l:keywords.types(), l:keyword) >= 0
