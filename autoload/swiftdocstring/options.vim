@@ -13,6 +13,7 @@ function! g:swiftdocstring#options#build()
 
     call s:retrive_delimiter_option(l:options)
     call s:retrive_indentation_option(l:options)
+    call s:retrive_placeholder_options(l:options)
 
     return l:options
 endfunction
@@ -31,3 +32,16 @@ function! s:retrive_indentation_option(options)
     let l:indentation_level = g:swiftdocstring#text_indentation_level
     let a:options['indentation-level'] = l:indentation_level
 endfunction
+
+" Get placeholder settings from global option.
+function! s:retrive_placeholder_options(options)
+    let l:use_placeholders = g:swiftdocstring#use_placeholders
+    let a:options['use-placeholder'] = l:use_placeholders
+    if l:use_placeholders
+        let l:placeholder_template = g:swiftdocstring#placeholder_template
+        let a:options['placeholder-open'] = l:placeholder_template[0]
+        let a:options['placeholder-close'] = l:placeholder_template[-1]
+    endif
+endfunction
+
+
