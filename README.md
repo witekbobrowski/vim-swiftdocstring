@@ -52,13 +52,28 @@ autocmd Filetype swift nnoremap <silent><tab>/ :SwiftDocstringCurrent<CR>
 ```
 
 ##### Options
+
+For customized behaviour, change values of these properties. Values presented 
+below are the defaults.
 ```vim
 " Use Multi-line delimiter '/** ... */' instead of single-line '///'
-let g:swiftdocstring#use_multi_line_delimiter = 1 " Default = 0
+" Boolen value (0 or 1)
+let g:swiftdocstring#use_multi_line_delimiter = 0
 ```
 ```vim
-" Set indentation for dosctring between the text and delimiters to zero
-let g:swiftdocstring#text_indentation_level = 0 " Default = 1
+" Set indentation for dosctring between the text and delimiters
+" Integer value (>=0)
+let g:swiftdocstring#text_indentation_level = 1
+```
+```vim
+" Use placeholders for some components of the docstring 
+" Boolen value (0 or 1)
+let g:swiftdocstring#use_placeholders = 1
+```
+```vim
+" Placeholders to be used if setting above is set as true 
+" Two element string array
+let g:swiftdocstring#placeholder_template = ['<#', '#>']
 ```
 
 ## Documentation

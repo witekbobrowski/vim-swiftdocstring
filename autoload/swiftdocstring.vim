@@ -32,7 +32,7 @@ endfunction
 function! s:docstring(line)
     " Prepare dependencies
     let l:options = swiftdocstring#options#build() 
-    let l:template = swiftdocstring#template#factory()
+    let l:template = swiftdocstring#template#factory(l:options)
 
     " Begin flow
     let l:parsed = swiftdocstring#parser#parse(a:line, l:options)

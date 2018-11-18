@@ -7,9 +7,19 @@
 "
 
 " Factory of single line templates designated to use in docstring builder
-function! g:swiftdocstring#template#factory()
-    let self = {}
+function! g:swiftdocstring#template#factory(options)
+    let self = {'options': a:options}
     
+    function! self.placeholder(text)
+        let l:options = self['options']
+        if !l:options['use-placeholder']
+            return a:text
+        endif
+        let l:open = l:options['placeholder-open']
+        let l:close = l:options['placeholder-close']
+        return l:open . a:text . l:close
+    endfunction
+
     function! self.single_line()
         return '///'
     endfunction
@@ -27,7 +37,7 @@ function! g:swiftdocstring#template#factory()
     endfunction
 
     function! self.simple()
-        return '<#Description#>'
+        return self.placeholder('Description')
     endfunction
     
     function! self.parameters()
@@ -35,23 +45,28 @@ function! g:swiftdocstring#template#factory()
     endfunction
 
     function! self.returns()
-        return '- Returns: return value description'
+        let l:placeholder = self.placeholder('return value description')
+        return '- Returns: ' . l:placeholder
     endfunction
 
     function! self.throws()
-        return '- Throws: throws value description'
+        let l:placeholder = self.placeholder('throws value description')
+        return '- Throws: ' . l:placeholder
     endfunction
 
     function! self.parameter_single(parameter)
-        return '- Parameter ' . a:parameter . ': ' . a:parameter . ' description'
+        let l:placeholder = self.placeholder(a:parameter . ' description')
+        return '- Parameter ' . a:parameter . ': ' . l:placeholder 
     endfunction
     
     function! self.parameter(parameter)
-        return '  - '. a:parameter . ': ' . a:parameter . ' description'
+        let l:placeholder = self.placeholder(a:parameter . ' description')
+        return '  - '. a:parameter . ': ' . l:placeholder
     endfunction
 
     function! self.enumCase(case)
-        return '- ' . a:case . ': ' . a:case . ' description'
+        let l:placeholder = self.placeholder(a:case . ' description')
+        return '- ' . a:case . ': ' . l:placeholder 
     endfunction
 
     return self
