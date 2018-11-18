@@ -12,6 +12,7 @@ function! g:swiftdocstring#options#build()
     let l:options = {}
 
     call s:retrive_delimiter_option(l:options)
+    call s:retrive_indentation_option(l:options)
 
     return l:options
 endfunction
@@ -23,4 +24,10 @@ function! s:retrive_delimiter_option(options)
     else  
         let a:options['delimiter-type'] = 'single-line'
     endif 
+endfunction
+
+" Get indentation from global option.
+function! s:retrive_indentation_option(options)
+    let l:indentation_level = g:swiftdocstring#text_indentation_level
+    let a:options['indentation-level'] = l:indentation_level
 endfunction

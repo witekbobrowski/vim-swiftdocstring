@@ -54,7 +54,11 @@ autocmd Filetype swift nnoremap <silent><tab>/ :SwiftDocstringCurrent<CR>
 ##### Options
 ```vim
 " Use Multi-line delimiter '/** ... */' instead of single-line '///'
-let g:swiftdocstring#use_multi_line_delimiter = 1
+let g:swiftdocstring#use_multi_line_delimiter = 1 " Default = 0
+```
+```vim
+" Set indentation for dosctring between the text and delimiters to zero
+let g:swiftdocstring#text_indentation_level = 0 " Default = 1
 ```
 
 ## Documentation

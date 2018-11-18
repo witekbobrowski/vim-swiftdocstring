@@ -18,3 +18,4 @@ command! -nargs=0 SwiftDocstringTypes call g:swiftdocstring#docstring_types()
 
 " User defined options
 let g:swiftdocstring#use_multi_line_delimiter = 0
+let g:swiftdocstring#text_indentation_level = 1

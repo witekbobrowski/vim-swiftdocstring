@@ -27,31 +27,31 @@ function! g:swiftdocstring#template#factory()
     endfunction
 
     function! self.simple()
-        return ' Description'
+        return '<#Description#>'
     endfunction
     
     function! self.parameters()
-        return ' - Parameters:'
+        return '- Parameters:'
     endfunction
 
     function! self.returns()
-        return ' - Returns: return value description'
+        return '- Returns: return value description'
     endfunction
 
     function! self.throws()
-        return ' - Throws: throws value description'
+        return '- Throws: throws value description'
     endfunction
 
     function! self.parameter_single(parameter)
-        return ' - Parameter ' . a:parameter . ': ' . a:parameter . ' description'
+        return '- Parameter ' . a:parameter . ': ' . a:parameter . ' description'
     endfunction
     
     function! self.parameter(parameter)
-        return '   - '. a:parameter . ': ' . a:parameter . ' description'
+        return '  - '. a:parameter . ': ' . a:parameter . ' description'
     endfunction
 
     function! self.enumCase(case)
-        return ' - ' . a:case . ': ' . a:case . ' description'
+        return '- ' . a:case . ': ' . a:case . ' description'
     endfunction
 
     return self

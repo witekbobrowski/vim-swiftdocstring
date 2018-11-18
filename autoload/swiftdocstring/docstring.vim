@@ -96,6 +96,11 @@ endfunction
 function! s:update_with_options(lines, options, template)
     let l:updated = a:lines
 
+    if has_key(a:options, 'indentation-level')
+        let l:indentation_level = a:options['indentation-level']
+        let l:updated = g:swiftdocstring#utils#indented_strings(l:updated, l:indentation_level)
+    endif
+    
     if has_key(a:options, 'delimiter-type')
         let l:delimiter = a:options['delimiter-type']
         let l:updated = s:update_with_delimiter(l:updated, l:delimiter, a:template) 
@@ -120,7 +125,7 @@ function! s:update_with_delimiter(lines, delimiter_type, template)
     elseif a:delimiter_type ==# 'single-line' 
         let l:prefix = a:template.single_line()
     endif 
-    let l:updated += swiftdocstring#utils#prefixed_strings(a:lines, l:prefix)
+    let l:updated += g:swiftdocstring#utils#prefixed_strings(a:lines, l:prefix)
     if a:delimiter_type ==# 'multi-line'
         call add(l:updated, a:template.multi_line_end())
     endif
@@ -130,5 +135,5 @@ endfunction
 " Prefix all lines with indentation from given line number.
 function! s:update_with_indentation(lines, line_n)
     let l:indentation = indent(a:line_n)
-    return swiftdocstring#utils#indented_strings(a:lines, l:indentation)
+    return g:swiftdocstring#utils#indented_strings(a:lines, l:indentation)
 endfunction
