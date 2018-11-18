@@ -8,51 +8,51 @@
 
 " Factory of single line templates designated to use in docstring builder
 function! g:swiftdocstring#template#factory()
-    let template = {}
+    let self = {}
     
-    function! template.single_line()
+    function! self.single_line()
         return '///'
     endfunction
     
-    function! template.multi_line_begin()
+    function! self.multi_line_begin()
         return '/**'
     endfunction
 
-    function! template.multi_line_end()
+    function! self.multi_line_end()
         return '*/' 
     endfunction
 
-    function! template.empty()
+    function! self.empty()
         return ''
     endfunction
 
-    function! template.simple()
+    function! self.simple()
         return ' Description'
     endfunction
     
-    function! template.parameters()
+    function! self.parameters()
         return ' - Parameters:'
     endfunction
 
-    function! template.returns()
+    function! self.returns()
         return ' - Returns: return value description'
     endfunction
 
-    function! template.throws()
+    function! self.throws()
         return ' - Throws: throws value description'
     endfunction
 
-    function! template.parameter_single(parameter)
+    function! self.parameter_single(parameter)
         return ' - Parameter ' . a:parameter . ': ' . a:parameter . ' description'
     endfunction
     
-    function! template.parameter(parameter)
+    function! self.parameter(parameter)
         return '   - '. a:parameter . ': ' . a:parameter . ' description'
     endfunction
 
-    function! template.enumCase(case)
+    function! self.enumCase(case)
         return ' - ' . a:case . ': ' . a:case . ' description'
     endfunction
 
-    return template
+    return self
 endfunction
