@@ -72,11 +72,7 @@ endfunction
 function! s:generate_from_type(type_ir, template)
     if has_key(a:type_ir, 'enum')
         return s:generate_from_enum(a:type_ir['enum'], a:template)
-    elseif has_key(a:type_ir, 'struct')
-        return [a:template.simple()]
-    elseif has_key(a:type_ir, 'class')
-        return [a:template.simple()]
-    elseif has_key(a:type_ir, 'protocol')
+    else
         return [a:template.simple()]
     endif
 endfunction
