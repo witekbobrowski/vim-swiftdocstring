@@ -19,14 +19,20 @@ endfunction
 
 " Check if given string contains full function context
 function! g:swiftdocstring#regex#is_full_enum_context(context)
-    let l:pattern = '\v(enum)@<=(.|\s)*'
-    return g:swiftdocstring#utils#match(a:context, l:pattern)
+    let l:pattern = ''
+    let l:count = 0
+    while g:swiftdocstring#utils#match_times(a:context, '\v\{', l:count + 1)
+        let l:count += 1
+    endwhile
+    if l:count < 1
+        return 0
+    endif
+    return g:swiftdocstring#utils#match_times(a:context, '\v\}', l:count)
 endfunction
 
 " Retrive functions parameters from declaration
 function! g:swiftdocstring#regex#match_enum_cases(context)
-    let l:pattern = ''
-    return matchstr(a:context, l:pattern)
+    return ''
 endfunction
 
 " Function matching

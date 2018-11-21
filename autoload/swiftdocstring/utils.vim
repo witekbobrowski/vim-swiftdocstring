@@ -50,3 +50,8 @@ endfunction
 function! g:swiftdocstring#utils#match(text, pattern)
     return match(a:text, a:pattern) != -1
 endfunction
+
+" Match n-times pattern in string 
+function! g:swiftdocstring#utils#match_times(text, pattern, times)
+    return match(a:text, a:pattern, 0, a:times) != -1
+endfunction
