@@ -214,7 +214,25 @@ endfunction
 " Helper function for parsing enums 
 function! s:parse_enum(lines)
     let l:context = g:swiftdocstring#utils#merge(a:lines)
-    let l:cases = g:swiftdocstring#regex#match_enum_cases(l:context)
+    let l:declarations = []
+    for line in a:lines
+        if g:swiftdocstring#regex#is_enum_case_declaration(line)
+            call add(l:declarations, line)
+        endif
+    endfor
+    echom len(l:declarations)
+    let l:cases = []
+    for line in l:declarations
+        let l:cases += s:parse_enum_cases(line)
+    endfor
     return {'cases': l:cases}
 endfunction
 
+function! s:parse_enum_cases(line)
+    let l:cases = []
+    let l:context = g:swiftdocstring#regex#match_cases_context(a:line)
+    for word in split(l:context, ',')
+        echom word
+    endfor
+    return l:cases
+endfunction

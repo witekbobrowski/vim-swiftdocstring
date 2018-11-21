@@ -30,9 +30,14 @@ function! g:swiftdocstring#regex#is_full_enum_context(context)
     return g:swiftdocstring#utils#match_times(a:context, '\v\}', l:count)
 endfunction
 
-" Retrive functions parameters from declaration
-function! g:swiftdocstring#regex#match_enum_cases(context)
-    return ''
+function! g:swiftdocstring#regex#is_enum_case_declaration(context)
+    let l:pattern = '\v^(\s)*<case>(\s)+'
+    return g:swiftdocstring#utils#match(a:context, l:pattern)
+endfunction
+
+function! g:swiftdocstring#regex#match_cases_context(line)
+    let l:pattern = '\v((case\s)@<=(.)*)\s*'
+    return matchstr(a:line, l:pattern)
 endfunction
 
 " Function matching
