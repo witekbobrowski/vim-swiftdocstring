@@ -228,6 +228,7 @@ function! s:parse_enum(lines)
     return {'cases': l:cases}
 endfunction
 
+" Parse enum cases from singe line of enum context
 function! s:parse_enum_cases(line)
     let l:cases = []
     let l:context = g:swiftdocstring#regex#match_cases_context(a:line)

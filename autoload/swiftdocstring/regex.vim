@@ -30,16 +30,19 @@ function! g:swiftdocstring#regex#is_full_enum_context(context)
     return g:swiftdocstring#utils#match_times(a:context, '\v\}', l:count)
 endfunction
 
+" Check if line contains proper case declaration, ignore cases in switch
 function! g:swiftdocstring#regex#is_enum_case_declaration(context)
-    let l:pattern = '\v^(\s)*<case>(\s)+'
+    let l:pattern = '\v^(\s)*<case>(\s)+\.@!'
     return g:swiftdocstring#utils#match(a:context, l:pattern)
 endfunction
 
+" Get content with actual cases in single line ignoring case keyword
 function! g:swiftdocstring#regex#match_cases_context(line)
     let l:pattern = '\v((case\s)@<=(.)*)\s*'
     return matchstr(a:line, l:pattern)
 endfunction
 
+" Strip enum case identifier from spaces, associated values and assigned values
 function! g:swiftdocstring#regex#strip_enum_case_value(line)
     let l:pattern = '\v<\w*>'
     return matchstr(a:line, l:pattern)
