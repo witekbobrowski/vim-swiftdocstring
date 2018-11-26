@@ -232,7 +232,8 @@ function! s:parse_enum_cases(line)
     let l:cases = []
     let l:context = g:swiftdocstring#regex#match_cases_context(a:line)
     for word in split(l:context, ',')
-        echom word
+        let l:stripped = g:swiftdocstring#regex#strip_enum_case_value(word)
+        call add(l:cases, l:stripped)
     endfor
     return l:cases
 endfunction

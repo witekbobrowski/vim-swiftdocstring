@@ -40,6 +40,11 @@ function! g:swiftdocstring#regex#match_cases_context(line)
     return matchstr(a:line, l:pattern)
 endfunction
 
+function! g:swiftdocstring#regex#strip_enum_case_value(line)
+    let l:pattern = '\v<\w*>'
+    return matchstr(a:line, l:pattern)
+endfunction
+
 " Function matching
 
 " Check if given string contains full function context
