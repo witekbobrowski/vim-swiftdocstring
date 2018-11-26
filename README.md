@@ -4,12 +4,13 @@ A simple vim/neovim plugin that provides Xcode-like docstring templates for Swif
 
 ## Features
 
-- Generate Swift docstrings for types, functions and properties
-- Support for `///` and `/** ... */` delimiters 
-- Xcode-like style of docstrings 
-- Context awarness that puts Xcode docstring generation to shame
-- Blazing fast parsing using regular expressions
-- Zero dependency (**100%** vim-script)
+- 📑 Generate Swift docstrings for types, functions and properties
+- 🎛 Support for `///` and `/** ... */` delimiters 
+- 🎨 Even more customizable output
+- 🔨 Xcode-like style of docstrings 
+- 🧠 Context awarness that puts Xcode docstring generation to shame
+- 🔥 Fast parsing using regular expressions
+- 👌 Zero dependency (**100%** vim-script)
 
 ## Installation
 
