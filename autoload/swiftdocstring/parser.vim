@@ -220,7 +220,6 @@ function! s:parse_enum(lines)
             call add(l:declarations, line)
         endif
     endfor
-    echom len(l:declarations)
     let l:cases = []
     for line in l:declarations
         let l:cases += s:parse_enum_cases(line)
