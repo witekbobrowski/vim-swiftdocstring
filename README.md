@@ -95,6 +95,15 @@ from Xcode, I want to add at least one brick to the wall. This is as far as
 I can go at the moment with the amount of time it took to create this peace 
 of code. I intend it to remain simple, yet useful. Contributions are welcomed.
 
+## Resources
+
+To learn more about Swift docstrings read this awesome article at NSHipster:
+[Swift Documentation](https://nshipster.com/swift-documentation/) 
+> Swift Documentation
+>
+> Written by Nate Cook & Mattt — July 11th, 2018 (revised)
+
+
 ## License
 
 The plugin in licensed under MIT license so do what ever you want with it.
