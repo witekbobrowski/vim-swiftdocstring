@@ -1,7 +1,7 @@
 # vim-swiftdocstring
 <p align=center>
 <a href="">
-<img alt="screenshot" src="screenshot.png">
+<img alt="screenshot" src="https://github.com/witekbobrowski/vim-swiftdocstring/blob/efdb5a150063d816fa9d4a119205477463a3c8f9/screenshot.png?raw=true">
 </a>
 </p>
 <p align=center>
@@ -9,7 +9,7 @@
     <a href="https://twitter.com/witekbobrowski"><img alt="Contact" src="https://img.shields.io/badge/contact-@witekbobrowski-blue.svg"></a>
 </p>
 <p align=center>
-A simple vim/neovim plugin that provides Xcode-like docstring templates for Swift.
+A simple vim/neovim plugin that provides Xcode-like docstring templates for Swift
 </p>
 
 ## Features
