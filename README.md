@@ -4,7 +4,13 @@
 <img alt="screenshot" src="screenshot.png">
 </a>
 </p>
+<p align=center>
+    <a href=""><img alt="Version" src="https://img.shields.io/badge/version-0.1.0-red.svg"></a>
+    <a href="https://twitter.com/witekbobrowski"><img alt="Contact" src="https://img.shields.io/badge/contact-@witekbobrowski-blue.svg"></a>
+</p>
+<p align=center>
 A simple vim/neovim plugin that provides Xcode-like docstring templates for Swift.
+</p>
 
 ## Features
 
