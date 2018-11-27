@@ -1,5 +1,9 @@
 # vim-swiftdocstring
-
+<p align=center>
+<a href="">
+<img alt="screenshot" src="screenshot.png">
+</a>
+</p>
 A simple vim/neovim plugin that provides Xcode-like docstring templates for Swift.
 
 ## Features
