@@ -38,6 +38,7 @@ function! s:docstring(line)
     let l:parsed = swiftdocstring#parser#parse(a:line, l:options)
     " Return if there is no context detected and parsed
     if empty(l:parsed)
+        echom 'Nothing found to document at the current location'
         return
     endif
     let l:docstring = swiftdocstring#docstring#build(l:parsed, l:template, l:options)
