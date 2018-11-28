@@ -18,7 +18,7 @@ A simple vim/neovim plugin that provides Xcode-like docstring templates for Swif
 - 🎛 Support for `///` and `/** ... */` delimiters 
 - 🎨 Even more customizable output
 - 🔨 Xcode-like style of docstrings 
-- 🧠 Context awarness that puts Xcode docstring generation to shame
+- 🧠 Better context awarness than in Xcode
 - 🔥 Fast parsing using regular expressions
 - 👌 Zero dependency (**100%** vim-script)
 
