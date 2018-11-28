@@ -18,10 +18,12 @@ CONTENTS                                              *swiftdocstring-contents*
     1.Intro...................................|swiftdocstring|
     2.Installation............................|swiftdocstring-install|
     3.Features................................|swiftdocstring-features|
-    4.Options.................................|swiftdocstrin-options|
-    5.Key mappings............................|swiftdocstring-mappings|
-    6.About...................................|swiftdocstring-about|
-    7.License.................................|swiftdocstring-license|
+    4.Commands................................|swiftdocstrin-commands|
+    5.Mappings................................|swiftdocstring-mappings|
+    6.Options.................................|swiftdocstrin-options|
+    7.Why.....................................|swiftdocstring-why|
+    8.Recources...............................|swiftdocstring-resources|
+    9.License.................................|swiftdocstring-license|
 
 ===============================================================================
 1. Intro                                                   *vim-swiftdocstring*
@@ -51,30 +53,72 @@ pasting files in vim directories.
 ===============================================================================
 3. Features                                           *swiftdocstring-features*
 
-- Generate Swift docstrings for types, funcitons and properties
-- Support for /// and /** ... */ delimiters
+- Generate Swift docstrings for types, functions and properties
+- Support for `///` and `/** ... */` delimiters
+- Even more customizable output
 - Xcode-like style of docstrings
-- Context awarness that puts Xcode docstring generation to shame
-- Blazing fast parsing using regular expressions
+- Better context awarness than in Xcode
+- Fast parsing using regular expressions
 - Zero dependency (100% vim-script)
 
 ===============================================================================
-4. Options                                             *swiftdocstring-options*
+4. Commands                                           *swiftdocstring-commands*
 
-The interface provided by the plugin is super simple right now. Add the 
-following to your .vimrc
+4.1 *:SwiftDocstringCurrent*
 
-- Generate docstring for current context on 'Tab' + '/':
+Generates docstring for the context in the current line of the cursor
+
+4.2 *:SwiftDocstringTypes*
+
+Generates docstrings for every type declaration in current buffer 
+
+4.3 *:SwiftDocstringFunctions*
+
+Generates docstrings for every function declaration in current buffer
+
+===============================================================================
+5. Mappings                                           *swiftdocstring-mappings*
+
+Generate docstring for current context on 'Tab' + '/'
+
     autocmd Filetype swift nnoremap <silent><tab>/ :SwiftDocstringCurrent<CR>
 
 ===============================================================================
-5. Key mappings                                       *swiftdocstring-mappings*
+6. Options                                             *swiftdocstring-options*
 
-- Use Multi-line delimiter '/** ... */' instead of single-line '///'
-    let g:swiftdocstring#use_multi_line_delimiter = 1
+For customized behaviour, change values of these properties. Values presented 
+below are the defaults.
+
+6.1 *g:swiftdocstring#use_multi_line_delimiter*
+
+Use Multi-line delimiter '/** ... */' instead of single-line '///'.
+Expects: Boolen value (0 or 1)
+
+    let g:swiftdocstring#use_multi_line_delimiter = 0
+
+6.2 *g:swiftdocstring#text_indentation_level*
+
+Set indentation for dosctring between the text and delimiters.
+Expects: Integer value (>=0)
+
+    let g:swiftdocstring#text_indentation_level = 1
+
+6.3 *g:swiftdocstring#use_placeholders*
+
+Use placeholders for some components of the docstring.
+Expects: Boolen value (0 or 1)
+
+    let g:swiftdocstring#use_placeholders = 1
+
+6.4 *g:swiftdocstring#placeholder_template*
+
+Placeholders to be used if setting above is set as true.
+Expects: Two element string array
+
+    let g:swiftdocstring#placeholder_template = ['<#', '#>']
 
 ===============================================================================
-6. About                                                 *swiftdocstring-about*
+7. About                                                   *swiftdocstring-why*
 
 This plugin was made under the desire to have a powerfull Swift development
 envirionment in vim. Although the plugin brings only a small feature ported
@@ -91,7 +135,11 @@ a star on GitHub.
     url - https://github.com/witekbobrowski/vim-swiftdocstring
 
 ===============================================================================
-7. License                                             *swiftdocstring-license*
+8. Resources                                         *swiftdocstring-resources*
+
+
+===============================================================================
+9. License                                             *swiftdocstring-license*
 
 The plugin in licensed under MIT license so do what ever you want with it.
 -------------------------------------------------------------------------------
