@@ -99,10 +99,10 @@ basic documentation is available from inside of vim itself with `:h` command.
 
 ## Why
 
-This plugin was made under the desire to have a powerfull Swift development
-envirionment in vim. Although the plugin brings only a small feature ported
+This plugin was made under the desire to have a powerful Swift development
+environment in vim. Although the plugin brings only a small feature ported
 from Xcode, I want to add at least one brick to the wall. This is as far as
-I can go at the moment with the amount of time it took to create this peace 
+I can go at the moment with the amount of time it took to create this piece 
 of code. I intend it to remain simple, yet useful. Contributions are welcomed.
 
 ## Resources
